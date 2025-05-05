@@ -1,0 +1,179 @@
+package fr.insarouen.iti.prog.aventure.data;
+
+import fr.insarouen.iti.prog.aventure.Monde;
+import fr.insarouen.iti.prog.aventure.elements.structure.Piece;
+import fr.insarouen.iti.prog.aventure.elements.structure.Porte;
+import fr.insarouen.iti.prog.aventure.elements.objets.serrurerie.Serrure;
+import fr.insarouen.iti.prog.aventure.elements.objets.serrurerie.Cle;
+import fr.insarouen.iti.prog.aventure.elements.vivants.JoueurHumain;
+import fr.insarouen.iti.prog.aventure.elements.vivants.Vivant;
+import fr.insarouen.iti.prog.aventure.elements.objets.Objet;
+import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFinVivantDansPiece;
+import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
+import fr.insarouen.iti.prog.aventure.EtatDuJeu;
+
+import java.util.Scanner;
+import java.io.Reader;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.ArrayList;
+
+import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
+
+/**
+ * Classe {@code LecteurDescription} permettant de construire un {@link Monde}
+ * ainsi que ses {@link ConditionDeFin} à partir d'une description textuelle.
+ * <p>
+ * Cette classe lit un flux via un {@link Reader} et instancie dynamiquement les éléments du monde
+ * (pièces, portes, joueurs, etc.) en fonction de mots-clés définis.
+ * </p>
+ */
+public class LecteurDescription implements Lecteur{
+
+    /**
+     * Le monde construit à partir de la description.
+     */
+    private Monde monde;
+
+    /**
+     * La liste des conditions de fin associées au monde.
+     */
+    private Collection<ConditionDeFin> conditions = new ArrayList<>();
+    
+    /**
+     * Construit un {@code LecteurDescription} à partir d'un flux texte.
+     * 
+     * @param reader le flux contenant la description du monde.
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException si un nom d'entité est utilisé plusieurs fois.
+     * @throws IOException si une erreur d'entrée/sortie survient.
+     */
+    public LecteurDescription(Reader reader) throws NomDEntiteDejaUtiliseDansLeMondeException, IOException{
+        Scanner scanner=new Scanner(reader);
+        if (!scanner.next().equals("Monde")){
+            System.out.println("DOIT ETRE MONDE");
+            scanner.close();
+        }
+        this.monde = new Monde(scanner.next());
+        scanner.nextLine();
+        while (scanner.hasNextLine()){
+            String premier_mot=scanner.next();
+            switch (premier_mot){
+                case "Piece":
+                    this.creerPiece(scanner.next(), monde);
+
+                    break;
+                case "PorteSerrure":
+                    Serrure serrure = new Serrure(monde);
+                    this.creerPorteSerrure(scanner.next(),monde, serrure, (Piece)this.monde.getEntite(scanner.next()), (Piece)this.monde.getEntite(scanner.next()));
+                    break;
+                case "Porte":
+                    this.creerPorte(scanner.next(),monde, (Piece)this.monde.getEntite(scanner.next()), (Piece)this.monde.getEntite(scanner.next()));
+                    break;
+                case "Cle":
+                    Cle cle =((Porte)this.monde.getEntite(scanner.next())).getSerrure().creerCle();
+                    ((Piece)this.monde.getEntite(scanner.next())).deposer(cle);
+                    break;
+                case "JoueurHumain":
+                    this.creerJoueurHumain(scanner.next(), monde, scanner.nextInt(), scanner.nextInt(), (Piece)this.monde.getEntite(scanner.next()));
+                    break;
+                case "ConditionDeFinVivantDansPiece":
+                    this.creerConditionDeFinVivantDansPiece(scanner, monde);
+                    break;
+                default :
+                    System.out.println(String.format("Mot cle inconnu : %s", premier_mot));
+            }
+        }
+    scanner.close();
+    }
+
+    /**
+     * Retourne le monde construit.
+     *
+     * @return le monde.
+     */
+    public Monde getMonde(){
+        return this.monde;
+    }
+    
+    /**
+     * Retourne les conditions de fin associées au monde.
+     *
+     * @return la collection de conditions de fin.
+     */
+    public Collection<ConditionDeFin> getConditionsDeFin(){
+        return this.conditions;
+    }
+
+    /**
+     * Crée une porte entre deux pièces.
+     *
+     * @param nom le nom de la porte.
+     * @param monde le monde auquel appartient la porte.
+     * @param pieceA première pièce reliée.
+     * @param pieceB deuxième pièce reliée.
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException si le nom est déjà utilisé.
+     */
+    private void creerPorte(String nom,Monde monde, Piece pieceA, Piece pieceB) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        new Porte(nom,monde,  pieceA, pieceB);
+    }
+
+    /**
+     * Crée une porte avec serrure entre deux pièces.
+     *
+     * @param nom le nom de la porte.
+     * @param monde le monde auquel appartient la porte.
+     * @param serrure la serrure associée.
+     * @param pieceA première pièce reliée.
+     * @param pieceB deuxième pièce reliée.
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException si le nom est déjà utilisé.
+     */
+    private void creerPorteSerrure(String nom,Monde monde, Serrure serrure, Piece pieceA, Piece pieceB) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        new Porte(nom,monde, serrure,pieceA,pieceB);
+    }
+    
+    /**
+     * Crée une pièce dans le monde.
+     *
+     * @param nom le nom de la pièce.
+     * @param monde le monde auquel appartient la pièce.
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException si le nom est déjà utilisé.
+     */
+    private void creerPiece(String nom, Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        new Piece(nom,monde);
+    }
+
+    /**
+     * Crée un joueur humain dans une pièce.
+     *
+     * @param nom le nom du joueur.
+     * @param monde le monde auquel appartient le joueur.
+     * @param pointsVie les points de vie du joueur.
+     * @param pointsForce les points de force du joueur.
+     * @param piece la pièce de départ du joueur.
+     * @param objets objets éventuellement portés par le joueur.
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException si le nom est déjà utilisé.
+     */
+    private void creerJoueurHumain(String nom, Monde monde, int pointsVie, int pointsForce, Piece piece, Objet... objets) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        new JoueurHumain(nom, monde, pointsVie, pointsForce, piece, objets);
+    }
+
+    /**
+     * Crée une condition de fin où un vivant doit se trouver dans une pièce.
+     *
+     * @param s le scanner utilisé pour lire les informations.
+     * @param monde le monde associé.
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException si le nom est déjà utilisé.
+     */
+    private void creerConditionDeFinVivantDansPiece(Scanner s, Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException {
+        String etat_str = s.next();
+        EtatDuJeu etat;
+        if (etat_str.equals("SUCCES")) {
+            etat = EtatDuJeu.SUCCES;
+        } else {
+            etat = EtatDuJeu.ECHEC;
+        }
+        Vivant vivant = (Vivant) monde.getEntite(s.next().replaceAll("\"", ""));
+        Piece piece = (Piece) monde.getEntite(s.next().replaceAll("\"", ""));
+        this.conditions.add(new ConditionDeFinVivantDansPiece(etat, vivant, piece));
+    }
+}   

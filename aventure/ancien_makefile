@@ -1,0 +1,43 @@
+compile_src.sh
+
+#!/bin/bash
+
+CLASSPATH="./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar"
+TESTS=(
+  "fr.insarouen.iti.prog.aventure.AllTests"
+  "fr.insarouen.iti.prog.aventure.TestMonde"
+  "fr.insarouen.iti.prog.aventure.elements.AllTestsElements"
+  "fr.insarouen.iti.prog.aventure.elements.TestEntite"
+  "fr.insarouen.iti.prog.aventure.elements.structure.TestPiece"
+  "fr.insarouen.iti.prog.aventure.elements.vivants.TestVivant"
+  "fr.insarouen.iti.prog.aventure.elements.structure.TestPorte"
+)
+
+for test in "${TESTS[@]}"; do
+  echo "===== Exécution du test : $test ====="
+  java -classpath "$CLASSPATH" org.junit.runner.JUnitCore "$test"
+  echo "====================================="
+done
+
+# java -classpath ./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar org.junit.runner.JUnitCore  fr.insarouen.iti.prog.aventure.AllTests
+# java -classpath ./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar org.junit.runner.JUnitCore  fr.insarouen.iti.prog.aventure.TestMonde
+# java -classpath ./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar org.junit.runner.JUnitCore  fr.insarouen.iti.prog.aventure.elements.AllTestsElements
+# java -classpath ./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar org.junit.runner.JUnitCore  fr.insarouen.iti.prog.aventure.elements.TestEntite
+# java -classpath ./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar org.junit.runner.JUnitCore  fr.insarouen.iti.prog.aventure.elements.structure.TestPiece
+# java -classpath ./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar org.junit.runner.JUnitCore  fr.insarouen.iti.prog.aventure.elements.vivants.TestVivant
+# java -classpath ./classestest:./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar org.junit.runner.JUnitCore  fr.insarouen.iti.prog.aventure.elements.structure.TestPorte
+
+et 
+
+execute_test.sh
+
+#!/bin/bash
+
+# Définition du classpath
+CLASSPATH="./classes:/usr/share/java/junit4.jar:/usr/share/java/hamcrest-all.jar"
+
+# Compilation des fichiers sources
+javac -classpath "$CLASSPATH" -sourcepath ./src -d ./classes $(find ./src/fr/insarouen/iti/prog/aventure -name "*.java")
+
+# Compilation des fichiers de test
+javac -classpath "$CLASSPATH" -sourcepath ./srctest -d ./classestest $(find ./srctest -name "*.java")
