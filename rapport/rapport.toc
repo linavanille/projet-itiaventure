@@ -1,0 +1,4 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{2}{}%
+\contentsline {section}{\numberline {2}Tableau des tâches}{2}{}%
+\contentsline {section}{\numberline {3}Conclusion}{2}{}%
