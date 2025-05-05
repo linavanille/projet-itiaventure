@@ -1,0 +1,4 @@
+SELECT S.INTITULE
+FROM LIEUX L, SOIREES S
+WHERE L.IDL = S.IDL
+      AND L.TYPE = 'SalleMunicipale';

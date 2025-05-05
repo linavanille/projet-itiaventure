@@ -1,0 +1,11 @@
+DROP TABLE T;
+
+CREATE TABLE T (
+A INTEGER NOT NULL,
+B INTEGER NOT NULL); 
+
+INSERT INTO T VALUES (-1,4);
+INSERT INTO T VALUES (-1,10);
+INSERT INTO T VALUES (5,6);
+
+ * à modifier* GRANT select, update, insert, delete ON T to grtti;

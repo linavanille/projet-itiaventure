@@ -1,0 +1,50 @@
+CREATE TYPE POSITIONGPS AS(
+latitude REAL,
+longitude REAL);
+
+CREATE TABLE ENTREPRISE_BAT(
+nom VARCHAR (20) PRIMARY KEY,
+annee_creation NUMERIC(4),
+adresse VARCHAR(40));
+
+CREATE TABLE EMPLOYE(
+num_INSEE SERIAL PRIMARY KEY, 
+nom VARCHAR (20) NOT NULL,
+prenom VARCHAR(20),
+date_naiss DATE NOT NULL CHECK (date_naiss < CURRENT_DATE), 
+statut VARCHAR(10));
+
+CREATE TABLE EMPLOIE(
+nomEntreprise  VARCHAR(20),
+idEmploye INTEGER,
+dateEmbauche DATE CHECK (dateEmbauche < CURRENT_DATE),
+PRIMARY KEY (nomEntreprise, idEmploye),
+FOREIGN KEY (nomEntreprise) REFERENCES ENTREPRISE_BAT (nom),
+FOREIGN KEY (idEmploye) REFERENCES EMPLOYE (num_INSEE));
+
+CREATE TABLE CHANTIER(
+id SERIAL PRIMARY KEY,
+description VARCHAR(30),
+localisation POSITIONGPS,
+dateDeb DATE,
+dateFinPrevue DATE CHECK (dateDeb < dateFinPrevue),
+salaireParJour NUMERIC (10,2) NOT NULL);
+
+CREATE TABLE GERE(
+nomEntreprise VARCHAR(20),
+idChantier INTEGER,
+PRIMARY KEY (nomEntreprise, idChantier),
+FOREIGN KEY (nomEntreprise) REFERENCES ENTREPRISE_BAT (nom),
+FOREIGN KEY (idChantier) REFERENCES CHANTIER (id));
+
+CREATE TABLE REALISE(
+idEmploye INTEGER,
+idChantier INTEGER,
+PRIMARY KEY (idEmploye, idChantier),
+FOREIGN KEY (idEmploye) REFERENCES EMPLOYE (num_INSEE),
+FOREIGN KEY (idChantier) REFERENCES CHANTIER (id));
+
+
+
+
+

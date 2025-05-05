@@ -1,0 +1,9 @@
+SELECT NUM_VIN, 'de degre 12'
+FROM VINS
+WHERE DEGRE = 12
+
+UNION
+
+SELECT VIN, 'produit par le producteur 24'
+FROM RECOLTES
+WHERE PRODUCTEUR = 24;
