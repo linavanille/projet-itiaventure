@@ -15,6 +15,7 @@ public class MainBDexemple{
         Connection connection;
         connection = DriverManager.getConnection("jdbc:postgresql://iti-pg.insa-rouen.fr:5432/grtt8", "grtt8", "grtt8");
         PreparedStatement pst = connection.prepareStatement("SELECT Nom, Annee_naissance FROM zoo WHERE Annee_naissance >= 2000");
+        // executeQuery() est la méthode pour SELECT
         ResultSet laTable = pst.executeQuery();
         System.out.println("Voici les années de naissance des animaux nés dans les années 2000:");
         while (laTable.next()){
