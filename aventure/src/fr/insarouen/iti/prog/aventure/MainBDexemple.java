@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.lang.ClassNotFoundException;
 
-/* Cette classe est un main qui permet l'interaction entre le jeu itiaventure et les données de la base de donnée postgresql grtt8 */
-public class MainBD{
+/* Cette classe est un main qui sert d'exemple d'interaction entre java et une base de donnée postgresql */
+public class MainBDexemple{
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException{
         

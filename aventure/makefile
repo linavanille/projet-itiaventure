@@ -25,10 +25,14 @@ play:
 	
 jar:
 	jar -cvf $(LIB_DIR)/itiaventure.jar -C $(CLASS_DIR) .
-	
+		
 bd:
 	javac -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar -sourcepath ./src -d ./classes src/fr/insarouen/iti/prog/aventure/MainBD.java
 	java -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar fr.insarouen.iti.prog.aventure.MainBD
+	
+bdexemple:
+	javac -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar -sourcepath ./src -d ./classes src/fr/insarouen/iti/prog/aventure/MainBDexemple.java
+	java -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar fr.insarouen.iti.prog.aventure.MainBDexemple
 
 .PHONY: all compile javadoc clean play jar
 
