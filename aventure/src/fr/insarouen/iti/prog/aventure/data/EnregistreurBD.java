@@ -27,10 +27,7 @@ import fr.insarouen.iti.prog.aventure.elements.vivants.JoueurHumain;
  * </p>
  */
 
-// ajouter implements Enregistreur 
-// et modifier le constructeur pour se connecter à la BD depuis ailleurs
-// et nous on donne Connection connection
-public class EnregistreurBD{
+public class EnregistreurBD implements Enregistreur{
 
     PreparedStatement insertPst;
     String url;
@@ -41,10 +38,13 @@ public class EnregistreurBD{
     String nomMonde;
 
     public EnregistreurBD(Connection connection)throws SQLException{
+        this.connection = connection;
+        /*
         this.url = "jdbc:postgresql://iti-pg.insa-rouen.fr:5432/grtt8";
         this.login = "grtt8";
         this.password = "grtt8";
         this.connection = DriverManager.getConnection(url, login, password);
+        */
         this.monde = monde;
         this.nomMonde = monde.getNom();
     }
@@ -136,4 +136,7 @@ public class EnregistreurBD{
         insertPst.setString(2, nomJoueur);
     }
 
+    @Override
+    public void enregistrer(Monde monde, Collection<ConditionDeFin> conditions) throws Throwable{
+    }
 }
