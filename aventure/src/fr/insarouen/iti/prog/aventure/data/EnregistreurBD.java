@@ -81,7 +81,12 @@ public class EnregistreurBD{
     }
 
     public void enregistreurPiedDeBiche(PiedDeBiche pied) throws SQLException{
-
+        String insertSQL = "INSERT INTO PIED" + "(nomPDB, estDeplacable, nomMonde)" + "VALUES (?,?,?)"; 
+        this.insertPst = connection.prepareStatement(insertSQL);
+        String nomPDB = pied.getNom();
+        insertPst.setString(1, nomPiece);
+        insertPst.setString(2, estDeplacable);
+        insertPst.setString(3, this.nomMonde);
     }
 
     public void enregistreurJoueurHumain(){
