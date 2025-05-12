@@ -1,5 +1,8 @@
 package fr.insarouen.iti.prog.aventure.elements.structure;
 
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collection;
 import fr.insarouen.iti.prog.aventure.Monde;
 import fr.insarouen.iti.prog.aventure.elements.Etat;
 import fr.insarouen.iti.prog.aventure.elements.Activable;
@@ -25,6 +28,7 @@ public class Porte extends ElementStructurel implements Activable {
     /** Représente les deux pièces que cette porte relie (pieceA et pieceB).
     */
     private Piece pieceA, pieceB;
+    HashMap <String, Piece> lesPortes = new HashMap<String, Piece>();
 
     /** L'état actuel de la porte, qui peut être FERME, OUVERT ou VERROUILLE.
     */
@@ -51,6 +55,9 @@ public class Porte extends ElementStructurel implements Activable {
         this.etat = Etat.FERME;
         pieceA.addPorte(this);
         pieceB.addPorte(this);
+        lesPortes.put(pieceA.getNom(), pieceA);
+        lesPortes.put(pieceB.getNom(), pieceB);
+
     }
 
     /**
@@ -84,6 +91,10 @@ public class Porte extends ElementStructurel implements Activable {
             return this.pieceA;
         }
         return null;
+    }
+
+    public HashMap<String, Piece> getPieces(){
+        return this.lesPortes;
     }
 
     /**
