@@ -3,6 +3,7 @@ package fr.insarouen.iti.prog.aventure.elements.structure;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
+import java.util.Collections;
 import fr.insarouen.iti.prog.aventure.Monde;
 import fr.insarouen.iti.prog.aventure.elements.Etat;
 import fr.insarouen.iti.prog.aventure.elements.Activable;
@@ -93,8 +94,8 @@ public class Porte extends ElementStructurel implements Activable {
         return null;
     }
 
-    public HashMap<String, Piece> getPieces(){
-        return this.lesPortes;
+    public Collection<Piece> getPieces(){
+        return Collections.unmodifiableCollection(this.lesPortes.values());
     }
 
     /**

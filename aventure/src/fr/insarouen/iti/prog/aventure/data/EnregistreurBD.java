@@ -1,7 +1,7 @@
 package fr.insarouen.iti.prog.aventure.data;
 
 import java.util.Map;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +17,7 @@ import fr.insarouen.iti.prog.aventure.elements.Etat;
 import fr.insarouen.iti.prog.aventure.elements.Entite;
 import fr.insarouen.iti.prog.aventure.elements.structure.Piece;
 import fr.insarouen.iti.prog.aventure.elements.objets.PiedDeBiche;
+import fr.insarouen.iti.prog.aventure.elements.objets.Objet;
 import fr.insarouen.iti.prog.aventure.elements.vivants.JoueurHumain;
 
 /**
@@ -30,35 +31,68 @@ import fr.insarouen.iti.prog.aventure.elements.vivants.JoueurHumain;
 public class EnregistreurBD implements Enregistreur{
 
     PreparedStatement insertPst;
-    String url;
-    String login;
-    String password;
     Connection connection;
     Monde monde;
-    String nomMonde;
 
-    public EnregistreurBD(Connection connection)throws SQLException{
+    public EnregistreurBD(Connection connection, Monde monde)throws SQLException{
         this.connection = connection;
-        /*
-        this.url = "jdbc:postgresql://iti-pg.insa-rouen.fr:5432/grtt8";
-        this.login = "grtt8";
-        this.password = "grtt8";
-        this.connection = DriverManager.getConnection(url, login, password);
-        */
         this.monde = monde;
-        this.nomMonde = monde.getNom();
+
+        Collection<Porte> portes = null;
+        Collection<Piece> pieces = null;
+        Collection<PiedDeBiche> pdbs = null;
+        Collection<JoueurHumain> jhs = null;
+
+        this.enregistreurMonde();
+        for (Entite e : this.monde.getEntites()) {
+            if (e instanceof Porte) {
+                portes.add((Porte)e);
+            }
+            else { if (e instanceof Piece) {
+                pieces.add((Piece)e);
+            }
+            else { if (e instanceof PiedDeBiche) {
+                pdbs.add((PiedDeBiche)e);
+            }
+            else { if (e instanceof JoueurHumain) {
+                jhs.add((JoueurHumain)e);
+            }}}
+            }
+        }
+
+        for (Piece p : pieces) {
+            this.enregistreurPiece(p);
+            for (Objet o : p.getObjets()) {
+                if (o instanceof PiedDeBiche) {
+                    this.enregistreurContientPDB(p, (PiedDeBiche)o);
+                }
+            }
+        }
+        for (Porte p : portes) {
+            this.enregistreurPorte(p);
+        }
+        for (PiedDeBiche pdb : pdbs) {
+            this.enregistreurPiedDeBiche(pdb);
+        }
+        for (JoueurHumain jh : jhs) {
+            this.enregistreurJoueurHumain(jh);
+            for (Objet o : jh.getObjets()) {
+                if (o instanceof PiedDeBiche) {
+                    this.enregistreurPossedePDB(jh, (PiedDeBiche)o);
+                }
+            }
+        }
     }
 
     public void enregistreurMonde() throws SQLException{
         String insertSQL = "INSERT INTO Monde (nomMonde) VALUES (?)";
         this.insertPst = connection.prepareStatement(insertSQL);
-        insertPst.setString(1, this.nomMonde);
+        insertPst.setString(1, this.monde.getNom());
     }
 
     public void enregistreurPorte(Porte porte) throws SQLException{
-        String insertSQL = "INSERT INTO Porte (nomPorte, etat,  piece1, piece2, nomMonde) VALUES (?, ?, ?)";
+        String insertSQL = "INSERT INTO Porte (nomPorte, etat,  piece1, piece2, nomMonde) VALUES (?, ?, ?, ?, ?)";
         this.insertPst = connection.prepareStatement(insertSQL);
-        String nomPorte = porte.getNom();
         Etat etat = porte.getEtat();
         String etatString = "";
         switch(etat){
@@ -69,24 +103,26 @@ public class EnregistreurBD implements Enregistreur{
                 etatString = "OUVERT";
                 break;
         }
-        HashMap<String, Piece> lesPieces = porte.getPieces();
-        Piece piece1 = lesPieces.get("Piece1");
-        String piece1Nom = piece1.getNom();
-        Piece piece2 = lesPieces.get("Piece1");
-        String piece2Nom = piece2.getNom();
-        insertPst.setString(1, nomPorte);
+        Piece[] tab = null;
+        Piece[] lesPieces = porte.getPieces().toArray(tab);
+
+        Piece piece1 = lesPieces[0];
+        Piece piece2 = lesPieces[1];
+        insertPst.setString(1, porte.getNom());
         insertPst.setString(2, etatString);
-        insertPst.setString(3, piece1Nom);
-        insertPst.setString(4, piece2Nom);
-        insertPst.setString(5, this.nomMonde);
+        insertPst.setString(3, piece1.getNom());
+        insertPst.setString(4, piece2.getNom());
+        insertPst.setString(5, this.monde.getNom());
     }
 
     public void enregistreurPiece(Piece piece) throws SQLException{
         String insertSQL = "INSERT INTO Piece (nomPiece, nomMonde) VALUES (?,?)"; 
         this.insertPst = connection.prepareStatement(insertSQL);
-        String nomPiece = piece.getNom();
-        insertPst.setString(1, nomPiece);
-        insertPst.setString(2, this.nomMonde);
+        insertPst.setString(1, piece.getNom());
+        insertPst.setString(2, this.monde.getNom());
+        for (Entite e : piece.getObjets()) {
+            this.enregistreurContientPDB(piece, (PiedDeBiche)e);
+        }
     }
 
     public void enregistreurPiedDeBiche(PiedDeBiche pied) throws SQLException{
@@ -117,7 +153,10 @@ public class EnregistreurBD implements Enregistreur{
         insertPst.setInt(2, PV);
         insertPst.setInt(3, PF);
         insertPst.setString(4, nomPiece);
-        insertPst.setString(5, this.nomMonde);
+        insertPst.setString(5, this.monde.getNom());
+        for (Entite e : joueur.getObjets()) {
+            this.enregistreurPossedePDB(joueur, (PiedDeBiche)e);
+        }
     }
 
     public void enregistreurContientPDB(Piece piece, PiedDeBiche pied) throws SQLException{
