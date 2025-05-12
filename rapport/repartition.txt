@@ -1,3 +1,9 @@
 Séance 1 (BD)
 	- Thomas + Lina: EA vers Relationnel, Création des Tables, Contraintes d'intégrité 
 	- Dylan + Nathan: Création Main, JDBC, Tests tables
+	
+Séance 2 (BD)
+	- Thomas + Lina: Correction des tables, tests 
+	- Dylan (+ Thomas): Lecteur 
+	- Nathan (+ Lina): Enregistreur
+	- Nathan: Main
