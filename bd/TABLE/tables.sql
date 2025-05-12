@@ -1,25 +1,29 @@
 CREATE TABLE Monde(
 	nomMonde VARCHAR(20) PRIMARY KEY
-	);	
-	
-CREATE TABLE Porte(
-	nomPorte VARCHAR(20) PRIMARY KEY, 
-	etat VARCHAR(11) CHECK (etat IN('FERME','OUVERT','VEROUILLE','DEVEROUILLE')) not null,
-	nomMonde VARCHAR(20) not null, 
-	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde) ON DELETE CASCADE
-	); 
-
+	);
+		
 CREATE TABLE Piece(
 	nomPiece VARCHAR(20) PRIMARY KEY,
 	nomMonde VARCHAR(20) not null,
 	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde) ON DELETE CASCADE
 	);
+		
+CREATE TABLE Porte(
+	nomPorte VARCHAR(20) PRIMARY KEY, 
+	etat VARCHAR(11) CHECK (etat IN('FERME','OUVERT')) not null,
+	piece1 VARCHAR(20) not null,
+	piece2 VARCHAR(20) CHECK(piece1 <> piece2) not null,
+	nomMonde VARCHAR(20) not null, 
+	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde) ON DELETE CASCADE,
+	FOREIGN KEY (piece1) REFERENCES Piece(nomPiece) ON DELETE CASCADE,
+	FOREIGN KEY (piece2) REFERENCES piece(nompiece) ON DELETE CASCADE
+	); 
+
+
 	
 CREATE TABLE PiedDeBiche(
 	nomPDB VARCHAR(20) PRIMARY KEY, 
-	estDeplacabe BOOL not null, 
-	nommonde VARCHAR(20) not null,
-	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde) ON DELETE CASCADE
+	estDeplacabe BOOL not null
 	);
 	
 CREATE TABLE JoueurHumain(
@@ -31,30 +35,17 @@ CREATE TABLE JoueurHumain(
 	FOREIGN KEY (nomPiece) REFERENCES Piece(nomPiece) ON DELETE CASCADE,
 	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde) ON DELETE CASCADE
 	);
-	
-CREATE TABLE PossedePorte(
-	nomporte VARCHAR(20) not null,
-	nompiece VARCHAR(20) not null,
-	nomMonde VARCHAR(20) not null,
-	FOREIGN KEY (nomPorte) REFERENCES Porte(nomPorte) ON DELETE CASCADE, 
-	FOREIGN KEY (nomPiece) REFERENCES Piece(nomPiece) ON DELETE CASCADE,
-	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde)	ON DELETE CASCADE
-	);
-	
+
 CREATE TABLE ContientPDB(
-	nomPDB VARCHAR(20) not null,
+	nomPDB VARCHAR(20) not null UNIQUE,
 	nomPiece VARCHAR(20) not null,
-	nomMonde VARCHAR(20) not null,
 	FOREIGN KEY (nomPDB) REFERENCES PiedDeBiche(nomPDB) ON DELETE CASCADE, 
-	FOREIGN KEY (nomPiece) REFERENCES Piece(nomPiece) ON DELETE CASCADE,
-	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde) ON DELETE CASCADE	
+	FOREIGN KEY (nomPiece) REFERENCES Piece(nomPiece) ON DELETE CASCADE	
 	);
 	
 CREATE TABLE PossedePDB(
-	nomPDB VARCHAR(20),
-	nomJoueur VARCHAR(20),
-	nomMonde VARCHAR(20),
+	nomPDB VARCHAR(20) not null UNIQUE,
+	nomJoueur VARCHAR(20) not null,
 	FOREIGN KEY (nomPDB) REFERENCES PiedDeBiche(nomPDB) ON DELETE CASCADE, 
-	FOREIGN KEY (nomJoueur) REFERENCES JoueurHumain(nomJoueur) ON DELETE CASCADE,
-	FOREIGN KEY (nomMonde) REFERENCES Monde(nomMonde)	ON DELETE CASCADE
+	FOREIGN KEY (nomJoueur) REFERENCES JoueurHumain(nomJoueur) ON DELETE CASCADE
 	);

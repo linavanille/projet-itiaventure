@@ -1,8 +1,7 @@
 DROP TABLE PossedePDB;
 DROP TABLE ContientPDB;
-DROP TABLE PossedePorte;
 DROP TABLE JoueurHumain;
 DROP TABLE PiedDeBiche;
-DROP TABLE Piece;
 DROP TABLE Porte;
+DROP TABLE Piece;
 DROP TABLE Monde;
