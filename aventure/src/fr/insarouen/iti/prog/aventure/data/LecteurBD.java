@@ -111,7 +111,6 @@ public class LecteurBD implements Lecteur {
             Integer pointForce = laTable.getInt("pointForce");
             String nomPiece = laTable.getString("nomPiece");
             Collection<PiedDeBiche> inventaire = null;
-            Objet[] tab = null;
 
             String requetePDB = "SELECT nomPDB FROM PossedePDB WHERE nomJoueur = ?";
             PreparedStatement pstPDB = this.connection.prepareStatement(requetePDB);
@@ -124,7 +123,7 @@ public class LecteurBD implements Lecteur {
 
             pstPDB.close();
 
-            JoueurHumain jh = new JoueurHumain(nomJoueur, this.getMonde(), pointVie, pointForce, (Piece)this.getMonde().getEntite(nomPiece), inventaire.toArray(tab));
+            JoueurHumain jh = new JoueurHumain(nomJoueur, this.getMonde(), pointVie, pointForce, (Piece)this.getMonde().getEntite(nomPiece), inventaire.toArray(new Objet[0]));
         }
 
         pst.close();

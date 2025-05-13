@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.Collection;
 
 import java.io.ObjectOutputStream;
+import java.io.FileReader;
 
 import java.lang.ClassNotFoundException;
 
@@ -30,6 +31,11 @@ public class MainBD{
 
     private static Enregistreur enregistreur = null;
     private static Collection<ConditionDeFin>  conditionsDeFin = null;
+    private static Simulateur simulateur=null;
+    private static Monde monde=null;
+    private static Scanner scanner = new Scanner(System.in);
+    private static String nomFichier;
+    private static Lecteur lecteur=null;
 
     public static void sauvegarderFichierSerialisation() {
 
@@ -40,12 +46,12 @@ public class MainBD{
         // utilisation d'un gestionnaire de contexte pour la connexion à la base de données grtt8
         // fermeture automatique: pas besoin des lignes pst.close(); et connection.close();
         try (Connection connection = DriverManager.getConnection(url, login, password)){
-            Monde monde = new Monde("monde1");
+            chargerFichierDescription();
             enregistreur = new EnregistreurBD(connection, monde);
             enregistreur.enregistrer(monde, conditionsDeFin);
         } catch (Throwable e){
             enregistreur = null;
-            System.err.println("Une erreur SQL est survenu. " + e.getMessage() + " Sauvegarde des données impossible.");
+            e.printStackTrace();
         }
     }
 
@@ -53,4 +59,19 @@ public class MainBD{
         sauvegarderFichierSerialisation();
     }
 
+    public static void chargerFichierDescription() {
+	System.out.println("Chargement d'un fichier textuel de description");
+	System.out.print("Veuillez saisir le nom du fichier : ");
+	nomFichier = scanner.next();
+	try {
+	    lecteur = new LecteurDescription(new FileReader(nomFichier));
+	    monde = lecteur.getMonde();
+	    conditionsDeFin = lecteur.getConditionsDeFin();
+	    simulateur = new Simulateur(monde, conditionsDeFin);
+	} catch (Throwable e) {
+	    lecteur = null;
+	    System.err.println("La lecture de votre fichier a rencontré un problème");
+	    System.err.println(String.format("---> %s ",e.getMessage()));
+	}
+    }
 }
