@@ -11,6 +11,7 @@ public class DeclarationSimple{
 		this.lIdentifiant = lIdentifiant; 
 	}
 	
+	
 	public Fonction getFonction(){
         return laFonction;
     }

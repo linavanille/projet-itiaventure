@@ -9,15 +9,15 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.SuiteArgument
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.automate.Identifiant;
 
 public class Fonction{
-	private Identifiant lIdentifiant; 
+	private String lIdentifiant; 
 	private SuiteArguments lesArguments; 
 	
-	public Fonction(Identifiant lIdentifiant, SuiteArguments lesArguments){
+	public Fonction(String lIdentifiant, SuiteArguments lesArguments){
 		this.lIdentifant = lIdentifiant; 
 		this.lesArguements = lesArguments; 
 	}
 	
-	public Identifiant getIdentifiant(){
+	public String getIdentifiant(){
         return lIdentifiant;
     }
     
