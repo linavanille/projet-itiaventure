@@ -78,11 +78,14 @@ public class MainBD{
 
     public static void chargerDonneesBD(Connection connection) {
 	try {
+        
 	    lecteur = new LecteurBD(connection);
 	    monde = lecteur.getMonde();
+        
 	    conditionsDeFin = lecteur.getConditionsDeFin();
 	    simulateur = new Simulateur(monde, conditionsDeFin);
 	} catch (Throwable e) {
+        e.printStackTrace();
 	    lecteur = null;
 	}
     }

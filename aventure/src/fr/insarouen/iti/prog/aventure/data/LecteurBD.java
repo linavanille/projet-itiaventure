@@ -13,6 +13,7 @@ import fr.insarouen.iti.prog.aventure.EntiteDejaDansUnAutreMondeException;
 import fr.insarouen.iti.prog.aventure.elements.ActivationImpossibleException;
 
 import java.util.Collection;
+import java.util.ArrayList;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,7 +32,6 @@ public class LecteurBD implements Lecteur {
         this.connection = connection;
 
         this.lecteurMonde();
-        System.out.println(this.getMonde().getNom());
         this.lecteurPiedDeBiche();
         this.lecteurPiece();
         this.lecteurJoueurHumain();
@@ -52,26 +52,27 @@ public class LecteurBD implements Lecteur {
         String requete = "SELECT * FROM Monde";
         PreparedStatement pst = this.connection.prepareStatement(requete);
         ResultSet laTable = pst.executeQuery();
-
         while (laTable.next()) {
             String nomMonde = laTable.getString("nomMonde");
             this.monde = new Monde(nomMonde);
         }
-        pst.close();
     }
 
     public void lecteurPiedDeBiche() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException, EntiteDejaDansUnAutreMondeException {
-        String requete = "SELECT nomPiece FROM Piece";
+        String requete = "SELECT nomPDB FROM PiedDeBiche";
         PreparedStatement pst = this.connection.prepareStatement(requete);
         ResultSet laTable = pst.executeQuery();
 
         while (laTable.next()) {
             String nomPDB = laTable.getString("nomPDB");
-            Boolean estDeplacable = laTable.getBoolean("estDeplacable");
+            String estDeplacableString = laTable.getString("estDeplacable");
+            Boolean estDeplacable = false;
+            if (estDeplacableString == "true"){
+                estDeplacable = true;
+            }
             PiedDeBiche pdb = new PiedDeBiche(nomPDB, this.getMonde());
         }
 
-        pst.close();
     }
 
     public void lecteurPiece() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException {
@@ -90,13 +91,11 @@ public class LecteurBD implements Lecteur {
 
             while (lesPieces.next()) {
                 String nomPDB = lesPieces.getString("nomPDB");
-                piece.deposer((Objet)this.getMonde().getEntite("nomPDB"));
+                piece.deposer((Objet)this.getMonde().getEntite(nomPDB));
             }
 
-            pstPDB.close();
         }
 
-        pst.close();
     }
 
     public void lecteurJoueurHumain() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException {
@@ -109,7 +108,7 @@ public class LecteurBD implements Lecteur {
             Integer pointVie = laTable.getInt("pointVie");
             Integer pointForce = laTable.getInt("pointForce");
             String nomPiece = laTable.getString("nomPiece");
-            Collection<PiedDeBiche> inventaire = null;
+            Collection<PiedDeBiche> inventaire = new ArrayList<>();
 
             String requetePDB = "SELECT nomPDB FROM PossedePDB WHERE nomJoueur = ?";
             PreparedStatement pstPDB = this.connection.prepareStatement(requetePDB);
@@ -120,12 +119,8 @@ public class LecteurBD implements Lecteur {
                 inventaire.add((PiedDeBiche)this.getMonde().getEntite(lesPDB.getString("nomPDB")));
             }
 
-            pstPDB.close();
-
             JoueurHumain jh = new JoueurHumain(nomJoueur, this.getMonde(), pointVie, pointForce, (Piece)this.getMonde().getEntite(nomPiece), inventaire.toArray(new Objet[0]));
         }
-
-        pst.close();
     }
 
     public void lecteurPorte() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException, ActivationImpossibleException {
@@ -145,6 +140,5 @@ public class LecteurBD implements Lecteur {
             }
         }
 
-        pst.close();
     }
 }

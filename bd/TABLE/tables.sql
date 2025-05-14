@@ -21,7 +21,7 @@ CREATE TABLE Porte(
 	
 CREATE TABLE PiedDeBiche(
 	nomPDB VARCHAR(30) PRIMARY KEY, 
-	estDeplacabe BOOL not null
+	estDeplacabe VARCHAR(6) not null
 	);
 	
 CREATE TABLE JoueurHumain(

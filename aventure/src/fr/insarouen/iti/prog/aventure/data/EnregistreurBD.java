@@ -37,7 +37,7 @@ public class EnregistreurBD implements Enregistreur{
     public EnregistreurBD(Connection connection, Monde monde)throws SQLException{
         this.connection = connection;
         this.monde = monde;
-        //this.viderBD();
+        this.viderBD();
     }
 
     public void viderBD() throws SQLException {
