@@ -135,8 +135,16 @@ public class LecteurBD implements Lecteur {
             String piece1 = laTable.getString("piece1");
             String piece2 = laTable.getString("piece2");
             Porte porte = new Porte(nomPorte, this.getMonde(), (Piece)this.getMonde().getEntite(piece1), (Piece)this.getMonde().getEntite(piece2));
-            if (etat == "OUVERT") {
-                porte.activer();
+            switch(etat){
+                case "FERME":
+                    porte.setEtat(Etat.FERME);
+                    break;
+                case "OUVERT":
+                    porte.setEtat(Etat.OUVERT);
+                    break;
+                case "VERROUILLE":
+                    porte.setEtat(Etat.VERROUILLE);
+                    break;
             }
         }
 

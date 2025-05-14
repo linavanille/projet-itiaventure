@@ -10,10 +10,19 @@ import java.util.Scanner;
 
 import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
 import fr.insarouen.iti.prog.aventure.data.Enregistreur;
+import fr.insarouen.iti.prog.aventure.data.EnregistreurBD;
 import fr.insarouen.iti.prog.aventure.data.EnregistreurSerialisation;
 import fr.insarouen.iti.prog.aventure.data.Lecteur;
+import fr.insarouen.iti.prog.aventure.data.LecteurBD;
 import fr.insarouen.iti.prog.aventure.data.LecteurDescription;
 import fr.insarouen.iti.prog.aventure.data.LecteurSerialisation;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.lang.ClassNotFoundException;
 
 /**
  * Classe Main
@@ -36,13 +45,17 @@ public class Main {
     private static Collection<ConditionDeFin> conditionsDeFin=null;
 	/**le scanner pour lire et ou enregistrer */
     private static Scanner scanner = new Scanner(System.in);
+
+	private static String url = "jdbc:postgresql://iti-pg.insa-rouen.fr:5432/grtt8";
+	private static String login = "grtt8";
+	private static String password = "grtt8";
 	
 	/**
 	 * Main 
 	 * @param args les arguments du main
 	 * @throws ITIAventureException si problème
 	 */
-    public static void main(String[] args) throws ITIAventureException {
+    public static void main(String[] args) throws ITIAventureException, SQLException {
 	while (true) {
 	    System.out.println();
 	    System.out.println();
@@ -51,7 +64,9 @@ public class Main {
 	    System.out.println("2/ charger fichier de description");
 	    System.out.println("3/ sauvegarder une partie");
 	    System.out.println("4/ charger une sauvegarde");
-	    System.out.println("5/ quitter");
+		System.out.println("5/ enregistrer la partie dans la BD");
+		System.out.println("6/ charger la partie depuis la BD");
+	    System.out.println("7/ quitter");
 	    try {
 		switch (scanner.nextInt()) {
 		case 0:
@@ -78,6 +93,12 @@ public class Main {
 		    chargerFichierSerialisation();
 		    break;
 		case 5:
+		    enregistrerBD();
+		    break;
+		case 6:
+		    chargerBD();
+		    break;	
+		case 7:
 		    scanner.close();
 		    System.exit(1);
 		    break;
@@ -147,5 +168,33 @@ public class Main {
 	    System.err.println(e.getMessage());
 	}
     }
+
+	public static void enregistrerBD() throws SQLException{
+		Connection connection = DriverManager.getConnection(url, login, password);
+
+		try {
+            enregistreur = new EnregistreurBD(connection, monde);
+            enregistreur.enregistrer(monde, conditionsDeFin);
+        } catch (Throwable e){
+            enregistreur = null;
+            e.printStackTrace();
+        }   
+	}
+
+	public static void chargerBD() throws SQLException{
+		Connection connection = DriverManager.getConnection(url, login, password);
+
+		try {
+			lecteur = new LecteurBD(connection);
+			monde = lecteur.getMonde();
+			conditionsDeFin = lecteur.getConditionsDeFin();
+			simulateur = new Simulateur(monde, conditionsDeFin);
+		} catch (Throwable e) {
+			e.printStackTrace();
+			lecteur = null;
+		}
+
+		connection.close();
+	}
 			
 }

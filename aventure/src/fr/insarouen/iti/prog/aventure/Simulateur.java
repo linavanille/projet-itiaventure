@@ -71,11 +71,13 @@ public class Simulateur{
         }
 
         // Vérification des conditions de fin du jeu
-        for (ConditionDeFin cdf : this.conditionsDeFin){
-            this.etatdujeu = cdf.verifierCondition();
-            if (this.etatdujeu != EtatDuJeu.ENCOURS) {
-                System.out.println(this.etatdujeu);
-                return this.etatdujeu;
+        if (this.conditionsDeFin != null) {
+            for (ConditionDeFin cdf : this.conditionsDeFin){
+                this.etatdujeu = cdf.verifierCondition();
+                if (this.etatdujeu != EtatDuJeu.ENCOURS) {
+                    System.out.println(this.etatdujeu);
+                    return this.etatdujeu;
+                }
             }
         }
         return this.etatdujeu;

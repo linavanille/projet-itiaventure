@@ -11,6 +11,7 @@ import fr.insarouen.iti.prog.aventure.elements.objets.Objet;
 import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFinVivantDansPiece;
 import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
 import fr.insarouen.iti.prog.aventure.EtatDuJeu;
+import fr.insarouen.iti.prog.aventure.ITIAventureFactory;
 
 import java.util.Scanner;
 import java.io.Reader;
