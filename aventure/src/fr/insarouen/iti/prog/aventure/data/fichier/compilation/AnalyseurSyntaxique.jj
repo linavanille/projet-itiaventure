@@ -23,15 +23,15 @@ package fr.insarouen.iti.prog.aventure.data.fichier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.automates;
 import fr.insarouen.iti.prog.aventure.data.fichier.AST.ArgumentSimple;
 import fr.insarouen.iti.prog.aventure.data.fichier.AST.Fonction;
 import fr.insarouen.iti.prog.aventure.data.fichier.AST.SuiteArguments;
-import fr.insarouen.iti.prog.aventure.data.fichier.automates.Identifiant;
-import fr.insarouen.iti.prog.aventure.data.fichier.declaration.Declaration;
+import fr.insarouen.iti.prog.aventure.data.fichier.automate.Identifiant;
+import fr.insarouen.iti.prog.aventure.data.fichier.automate.EnumerationCDF;
+import fr.insarouen.iti.prog.aventure.data.fichier.automate.ChaineDeCaracteres;
+import fr.insarouen.iti.prog.aventure.data.fichier.automate.Nombre;
 
 public class AnalyseurSyntaxique {
 }
@@ -42,57 +42,64 @@ PARSER_END(AnalyseurSyntaxique)
 TOKEN : {
     <PARAG:"(">
     | <PARAD:")">      
-    | <QUOTE: "\\"">;
-    | <NOMBRE: [0-9]+>;
-    | <ID: ["a"-"z"]["a"-"z","A"-"Z","0"-"9","_"]*>;
-    | <ENUM: ["SUCCES","ENCOURS", "ECHEC"]>;
-    | <CDC: ["a"-"z","A"-"Z","0"-"9","_"]+>;
-    | <AFF: "=">;
     | <VIRG: ",">;
+    | <AFF: "=">;
+    | <QUOTE: "\\"">;
     | <NOMFONCTION: ["monde", "humain", "piece", "porte", "cle", "pied_de_biche", "cdf_vivant_dans_piece", "cdf_vivant_possede", "cdf_conjonction", "serrure", "monstre"];
+    | <NOMBRE: ["0"-"9"]+>;
+    | <ENUM: ["SUCCES","ENCOURS", "ECHEC"]>;
+    | <ID: ["a"-"z"]["a"-"z","A"-"Z","0"-"9","_"]*>;
+    | <CDC: ["a"-"z","A"-"Z","0"-"9","_"]+>;
 }
 
-Declaration declarationMultiple() :
-	{Declaration res=null;}{{return res;}}
+DeclarationMultiple declarationMultiple() :
+	{DeclarationSimple ds = null;
+  List<DeclarationSimple> lds = new ArrayList<>()}
+  {(ds = declarationSimple(){lds.add(ds)})+
+    {return new DeclarationMultiple(lds);}}
 
 
-Declaration declarationSimple():
-	{Declaration res=null;}{{return res;}}
+DeclarationSimple declarationSimple():
+	{DeclarationSimple res=null;
+  Identifiant idtf = null;
+  Fonction laFonction = null;}
+  {idtf = identifiant() <AFF> laFonction = fonction()
+    {return DeclarationSimple(idtf, laFonction);}}
 
 
 Fonction fonction() :
-	{Fonction res=null;}{{return res;}}
+	{SuiteArguments lesArgs;
+  String sonNom = null;}
+  {sonNom = nomFonction() <PARAG> lesArgs = suiteArguments() <PARAD> 
+  {return new Fonction(sonNom, lesArgs);}}
 
 
 SuiteArguments suiteArguments() :
-	{SuiteArguments res=null;}{{return res;}}
+	{ArgumentSimple unArg = null;
+  List<ArgumentSimple> lArg = new ArrayList<>();}
+  { (unArg = argumentSimple(){lArg.add(unArg);})+
+    {return new SuiteArguments(lArg);}}
 
 
 ArgumentSimple argumentSimple() :
-	{ArgumentSimple res=null;}{{return res;}}
+	{ArgumentSimple res = null;
+  Token t = null;}
+  {t = <NOMBRE> {res = Nombre(t.image);}
+  |t = <ENUM> {res = EnumerationCDF(t.image);}
+  |t = <ID> {res = Identifiant(t.image);}
+  |t = <CDC> {res = ChaineDeCaracteres(t.image);}}
+
+
+  {res = nombre(){}
+  |res = enumerationCDF(){}
+  |res = identifiant(){}
+  |res = chaineDeCaracteres(){}
+    {return res;}}
 	
 	
 // Terminaux 
 
-Identifiant identifiant() :
-	{Identifiant res=null;}{{return res;}}	
-	
-	
 String nomFonction() :
-	{String res=null;}{{return res;}}
-	
-	
-int nombre() :
-	{int res=null;}{{return res;}}
-	
-	
-String chaineDeCaracteres() :
-	{String res=null;}{{return res;}}
-	
-
-Etat enumerationCDF() :
-	{Etat res=null;}{{return res;}}
-	
-	
-	
-
+	{Token t=null;}
+  { t = <NOMFONCTION>
+    {return t.image;}}
