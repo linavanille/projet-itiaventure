@@ -107,6 +107,10 @@ public class Porte extends ElementStructurel implements Activable {
         return this.etat;
     }
 
+    public void setEtat(Etat etat) {
+        this.etat = etat;
+    }
+
     /**
      * Retourne la serrure associée à la porte, si elle en a une.
      * 
