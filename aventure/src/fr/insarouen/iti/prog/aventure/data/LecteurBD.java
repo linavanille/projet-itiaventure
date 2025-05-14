@@ -31,11 +31,11 @@ public class LecteurBD implements Lecteur {
         this.connection = connection;
 
         this.lecteurMonde();
+        System.out.println(this.getMonde().getNom());
         this.lecteurPiedDeBiche();
         this.lecteurPiece();
         this.lecteurJoueurHumain();
         this.lecteurPorte();
-        this.connection.close();
     }
 
     @Override
@@ -57,7 +57,6 @@ public class LecteurBD implements Lecteur {
             String nomMonde = laTable.getString("nomMonde");
             this.monde = new Monde(nomMonde);
         }
-
         pst.close();
     }
 

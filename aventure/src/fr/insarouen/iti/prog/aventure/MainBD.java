@@ -46,13 +46,14 @@ public class MainBD{
         // utilisation d'un gestionnaire de contexte pour la connexion à la base de données grtt8
         // fermeture automatique: pas besoin des lignes pst.close(); et connection.close();
         try (Connection connection = DriverManager.getConnection(url, login, password)){
-            chargerFichierDescription();
+            //chargerFichierDescription();
+            chargerDonneesBD(connection);
             enregistreur = new EnregistreurBD(connection, monde);
             enregistreur.enregistrer(monde, conditionsDeFin);
         } catch (Throwable e){
             enregistreur = null;
             e.printStackTrace();
-        }
+        }   
     }
 
     public static void main(String[] args) throws ITIAventureException{
@@ -74,4 +75,16 @@ public class MainBD{
 	    System.err.println(String.format("---> %s ",e.getMessage()));
 	}
     }
+
+    public static void chargerDonneesBD(Connection connection) {
+	try {
+	    lecteur = new LecteurBD(connection);
+	    monde = lecteur.getMonde();
+	    conditionsDeFin = lecteur.getConditionsDeFin();
+	    simulateur = new Simulateur(monde, conditionsDeFin);
+	} catch (Throwable e) {
+	    lecteur = null;
+	}
+    }
 }
+

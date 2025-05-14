@@ -37,6 +37,13 @@ public class EnregistreurBD implements Enregistreur{
     public EnregistreurBD(Connection connection, Monde monde)throws SQLException{
         this.connection = connection;
         this.monde = monde;
+        //this.viderBD();
+    }
+
+    public void viderBD() throws SQLException {
+        String insertSQL = "TRUNCATE TABLE possedePDB, contientPDB, JoueurHumain, PiedDeBiche, Porte, Piece, Monde";
+        this.insertPst = connection.prepareStatement(insertSQL);
+        insertPst.executeUpdate();
     }
 
     public void enregistreurMonde() throws SQLException{
@@ -105,6 +112,7 @@ public class EnregistreurBD implements Enregistreur{
 
     public void enregistreurJoueurHumain(JoueurHumain joueur) throws SQLException{
         String insertSQL = "INSERT INTO JoueurHumain (nomJoueur, pointVie, pointForce, nomPiece, nomMonde) VALUES (?,?,?,?,?)";
+        this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, joueur.getNom());
         insertPst.setInt(2, joueur.getPointVie());
         insertPst.setInt(3, joueur.getPointForce());
@@ -120,6 +128,7 @@ public class EnregistreurBD implements Enregistreur{
 
     public void enregistreurContientPDB(Piece piece, PiedDeBiche pied) throws SQLException{
         String insertSQL = "INSERT INTO ContientPDB (nomPDB, nomPiece) VALUES (?,?)"; 
+        this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, pied.getNom());
         insertPst.setString(2, piece.getNom());
         insertPst.executeUpdate();
@@ -127,6 +136,7 @@ public class EnregistreurBD implements Enregistreur{
 
     public void enregistreurPossedePDB(JoueurHumain joueur, PiedDeBiche pied) throws SQLException{
         String insertSQL = "INSERT INTO PossedePDB (nomPDB, nomPiece) VALUES (?,?)"; 
+        this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, pied.getNom());
         insertPst.setString(2, joueur.getNom());
         insertPst.executeUpdate();
@@ -157,7 +167,6 @@ public class EnregistreurBD implements Enregistreur{
         }
 
         for (Piece p : pieces) {
-            System.out.println("piece");
             this.enregistreurPiece(p);
             for (Objet o : p.getObjets()) {
                 if (o instanceof PiedDeBiche) {
@@ -166,15 +175,12 @@ public class EnregistreurBD implements Enregistreur{
             }
         }
         for (Porte p : portes) {
-            System.out.println("porte");
             this.enregistreurPorte(p);
         }
         for (PiedDeBiche pdb : pdbs) {
-            System.out.println("pdb");
             this.enregistreurPiedDeBiche(pdb);
         }
         for (JoueurHumain jh : jhs) {
-            System.out.println("jh");
             this.enregistreurJoueurHumain(jh);
             for (Objet o : jh.getObjets()) {
                 if (o instanceof PiedDeBiche) {
