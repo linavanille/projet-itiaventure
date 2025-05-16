@@ -19,7 +19,7 @@ options {
 }
 
 PARSER_BEGIN(AnalyseurSyntaxique)
-package fr.insarouen.iti.prog.aventure.data.fichier;
+package fr.insarouen.iti.prog.aventure.data.fichier.Analyseurs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,22 +42,22 @@ PARSER_END(AnalyseurSyntaxique)
 
 
 TOKEN : {
-    <PARAG:"(">
-    | <PARAD:")">      
-    | <VIRG: ",">;
-    | <AFF: "=">;
-    | <QUOTE: "\\"">;
-    | <NOMFONCTION: ["monde", "humain", "piece", "porte", "cle", "pied_de_biche", "cdf_vivant_dans_piece", "cdf_vivant_possede", "cdf_conjonction", "serrure", "monstre"];
-    | <NOMBRE: ["0"-"9"]+>;
-    | <ENUM: ["SUCCES","ENCOURS", "ECHEC"]>;
-    | <ID: ["a"-"z"]["a"-"z","A"-"Z","0"-"9","_"]*>;
-    | <CDC: ["a"-"z","A"-"Z","0"-"9","_"]+>;
+	<PARAG: "(">
+	| <PARAD: ")">      
+	| <VIRG: ",">
+	| <AFF: "=">
+	| <QUOTE: "\"">
+	| <NOMFONCTION: "monde" | "humain" | "piece" | "porte" | "cle" | "pied_de_biche" | "cdf_vivant_dans_piece" | "cdf_vivant_possede" | "cdf_conjonction" | "serrure" | "monstre">
+	| <NOMBRE: (["0"-"9"])+>
+	| <ENUM: "SUCCES" | "ENCOURS" | "ECHEC">
+	| <ID: ["a"-"z"](["a"-"z","A"-"Z","0"-"9","_"])*>
+	| <CDC: (["a"-"z","A"-"Z","0"-"9","_"])+>
 }
 
 DeclarationMultiple declarationMultiple() :
 	{DeclarationSimple ds = null;
-  List<DeclarationSimple> lds = new ArrayList<>()}
-  {(ds = declarationSimple(){lds.add(ds)})+
+  List<DeclarationSimple> lds = new ArrayList<DeclarationSimple>();}
+  {(ds = declarationSimple(){lds.add(ds);})+
     {return new DeclarationMultiple(lds);}}
 
 
@@ -66,7 +66,7 @@ DeclarationSimple declarationSimple():
   Identifiant idtf = null;
   Fonction laFonction = null;}
   {idtf = identifiant() <AFF> laFonction = fonction()
-    {return DeclarationSimple(idtf, laFonction);}}
+    {return new DeclarationSimple(idtf, laFonction);}}
 
 
 Fonction fonction() :
@@ -78,24 +78,20 @@ Fonction fonction() :
 
 SuiteArguments suiteArguments() :
 	{ArgumentSimple unArg = null;
-  List<ArgumentSimple> lArg = new ArrayList<>();}
+  List<ArgumentSimple> lArg = new ArrayList<ArgumentSimple>();}
   { (unArg = argumentSimple(){lArg.add(unArg);})+
     {return new SuiteArguments(lArg);}}
 
 
 ArgumentSimple argumentSimple() :
 	{ArgumentSimple res = null;
-  Token t = null;}
-  {t = <NOMBRE> {res = Nombre(t.image);}
-  |t = <ENUM> {res = EnumerationCDF(t.image);}
-  |t = <ID> {res = Identifiant(t.image);}
-  |t = <CDC> {res = ChaineDeCaracteres(t.image);}}
-
-
-  {res = nombre(){}
-  |res = enumerationCDF(){}
-  |res = identifiant(){}
-  |res = chaineDeCaracteres(){}
+  Token t = null;
+  Fonction f = null;}
+  {(t = <NOMBRE> {res = new Nombre(t.image);}
+  |t = <ENUM> {res = new EnumerationCDF(t.image);}
+  |f = fonction() {res = f;}
+  |t = <ID> {res = new Identifiant(t.image);}
+  |<QUOTE> t = <CDC> <QUOTE> {res = new ChaineDeCaracteres(t.image);})
     {return res;}}
 	
 	
@@ -105,3 +101,7 @@ String nomFonction() :
 	{Token t=null;}
   { t = <NOMFONCTION>
     {return t.image;}}
+    
+Identifiant identifiant() :
+	{Token t = null;}
+	{t = <ID> {return new Identifiant(t.image);}}
