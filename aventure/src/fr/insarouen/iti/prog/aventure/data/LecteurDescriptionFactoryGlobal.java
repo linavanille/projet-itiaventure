@@ -58,26 +58,21 @@ public class LecteurDescriptionFactoryGlobal implements Lecteur{
      */
     public LecteurDescriptionFactoryGlobal(Reader reader) throws NomDEntiteDejaUtiliseDansLeMondeException, IOException{
         Scanner scanner= new Scanner(reader);
+        ITIAventureFactory factory = null;
         switch(scanner.next()){
             case "ITIAventure":
-                ITIAventureFactory aventureFactory = new ITIAventureFactory();
-                this.chargerMonde(scanner, aventureFactory);
+                factory = new ITIAventureFactory();
                 break;
             case "ITISpaceOpera":
-                ITISpaceOperaFactory spaceOperaFactory = new ITISpaceOperaFactory();
-                this.chargerGalaxie(scanner, spaceOperaFactory);
+                factory = new ITISpaceOperaFactory();
                 break;
         }
-        System.out.println("Le monde a été chargé avec succès !");
-        scanner.close();
-    }
-
-    public void chargerMonde(Scanner scanner, ITIAventureFactory factory) throws NomDEntiteDejaUtiliseDansLeMondeException{
 
         if (!scanner.next().equals("Monde")){
             System.out.println("Il faut un monde");
             scanner.close();
         }
+
         this.monde = new Monde(scanner.next());
         scanner.nextLine();
         while (scanner.hasNextLine()){
@@ -105,43 +100,9 @@ public class LecteurDescriptionFactoryGlobal implements Lecteur{
                     System.out.println(String.format("Mot cle inconnu : %s", premier_mot));
             }
         }
-    }
 
-    public void chargerGalaxie(Scanner scanner, ITISpaceOperaFactory factory) throws NomDEntiteDejaUtiliseDansLeMondeException{
-
-        if (!scanner.next().equals("Monde")){
-            System.out.println("Il faut un monde");
-            scanner.close();
-        }
-        this.monde = new Galaxie(scanner.next());
-        scanner.nextLine();
-        while (scanner.hasNextLine()){
-            String premier_mot=scanner.next();
-            System.out.println(String.format("%s", premier_mot));
-            switch (premier_mot){
-                case "Piece":
-                    factory.creationVaisseauSpatial(scanner.next(), (Galaxie)this.monde);
-                    break;
-                case "PorteSerrure":
-                    factory.creationTeleporteurLecteurBadge(scanner.next(), (Galaxie)this.monde, (VaisseauSpatial)this.monde.getEntite(scanner.next()), (VaisseauSpatial)this.monde.getEntite(scanner.next()));
-                    break;
-                case "Porte":
-                    factory.creationTeleporteur(scanner.next(), (Galaxie)this.monde, (VaisseauSpatial)this.monde.getEntite(scanner.next()), (VaisseauSpatial)this.monde.getEntite(scanner.next()));
-                    break;
-                case "Cle":
-                    factory.creationBadge(scanner.next(), (Galaxie)this.monde, scanner.next());
-                    break;
-                case "JoueurHumain":
-                    this.creerJoueurHumain(scanner.next(), this.monde, scanner.nextInt(), scanner.nextInt(), (Piece)this.monde.getEntite(scanner.next()));
-                    break;
-                case "ConditionDeFinVivantDansPiece":
-                    this.creerConditionDeFinVivantDansPiece(scanner, this.monde);
-                    break;
-                default :
-                    System.out.println(String.format("Mot cle inconnu : %s", premier_mot));
-            }
-        }
-        
+        System.out.println("Le monde a été chargé avec succès !");
+        scanner.close();
     }
 
     /**
