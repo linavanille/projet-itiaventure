@@ -1,7 +1,7 @@
 package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Fonction;
-import fr.insarouen.iti.prog.aventure.data.fichier.fichier.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
 
 public class DeclarationSimple implements Visitable{
 	private Fonction laFonction; 
@@ -21,4 +21,8 @@ public class DeclarationSimple implements Visitable{
     	return lIdentifiant;
     }
 	
+	@Override
+    public void accepter(Visiteur v) throws Throwable {
+        v.visiter(this);
+    } 
 }

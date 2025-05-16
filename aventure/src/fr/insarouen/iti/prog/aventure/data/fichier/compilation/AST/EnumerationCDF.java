@@ -18,6 +18,7 @@ public class EnumerationCDF extends ArgumentSimple {
 			case "SUCCES":
 				return EtatDuJeu.SUCCES;
 		}
+		return null;
 	}
 }
 

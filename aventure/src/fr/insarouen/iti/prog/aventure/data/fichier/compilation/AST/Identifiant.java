@@ -8,4 +8,8 @@ public class Identifiant extends ArgumentSimple {
 	public Identifiant(String valeur) {
 		super(valeur);
 	}
+
+	public String getNom(){
+		return this.valeur;
+	}
 }

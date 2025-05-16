@@ -2,9 +2,11 @@ package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 
 import java.util.ArrayList;
 import java.util.List;
-import fr.insarouen.iti.prog.aventire.data.fichier.compilation.AST.ArgumentSimple;
+import java.util.Collection;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimple;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
 
-public class SuiteArguments {
+public class SuiteArguments implements Visitable{
     private List<ArgumentSimple> lesArgs;
 
     public SuiteArguments(List<ArgumentSimple> desArgs){
@@ -12,7 +14,12 @@ public class SuiteArguments {
         this.lesArgs.addAll(desArgs);
     }
 
-    public getArguments(){
+    public Collection<ArgumentSimple> getArguments(){
         return this.lesArgs;
     }
+
+    @Override
+    public void accepter(Visiteur v) throws Throwable {
+        v.visiter(this);
+    } 
 }

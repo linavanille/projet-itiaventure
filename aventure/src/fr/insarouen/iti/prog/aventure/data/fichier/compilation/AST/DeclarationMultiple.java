@@ -4,7 +4,7 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.DeclarationSi
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
-import fr.insarouen.iti.prog.aventure.data.fichier.fichier.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
 
 public class DeclarationMultiple implements Visitable{
 	private List<DeclarationSimple> lesDS;
@@ -15,6 +15,11 @@ public class DeclarationMultiple implements Visitable{
 	}
 	
     public Collection<DeclarationSimple> getDeclarationsSimples() {
-        return lesDS;
-    }    
+        return lesDS.values();
+    }
+
+	@Override
+    public void accepter(Visiteur v) throws Throwable {
+        v.visiter(this);
+    }  
 }
