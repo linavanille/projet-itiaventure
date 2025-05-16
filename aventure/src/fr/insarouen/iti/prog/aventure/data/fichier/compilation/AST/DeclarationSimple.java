@@ -1,8 +1,9 @@
 package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Fonction;
+import fr.insarouen.iti.prog.aventure.data.fichier.fichier.patronsConception.visiteur.Visitable;
 
-public class DeclarationSimple{
+public class DeclarationSimple implements Visitable{
 	private Fonction laFonction; 
 	private Identifiant lIdentifiant; 
 	

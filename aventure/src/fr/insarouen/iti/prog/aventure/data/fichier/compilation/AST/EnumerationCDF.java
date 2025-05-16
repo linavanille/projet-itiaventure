@@ -1,4 +1,4 @@
-package fr.insarouen.iti.prog.aventure.data.fichier.compilation.automate;
+package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimple;
 import fr.insarouen.iti.prog.aventure.EtatDuJeu;

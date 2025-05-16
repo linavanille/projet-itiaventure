@@ -2,7 +2,7 @@ package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 
 import java.util.ArrayList;
 import java.util.List;
-import fr.insarouen.iti.prog.aventire.data.fichier.compilation.automate.ArgumentSimple;
+import fr.insarouen.iti.prog.aventire.data.fichier.compilation.AST.ArgumentSimple;
 
 public class SuiteArguments {
     private List<ArgumentSimple> lesArgs;
