@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.automates;
+import fr.insarouen.iti.prog.aventure.data.fichier.AST.DeclarationMultiple;
+import fr.insarouen.iti.prog.aventure.data.fichier.AST.DeclarationSimple;
 import fr.insarouen.iti.prog.aventure.data.fichier.AST.ArgumentSimple;
 import fr.insarouen.iti.prog.aventure.data.fichier.AST.Fonction;
 import fr.insarouen.iti.prog.aventure.data.fichier.AST.SuiteArguments;
