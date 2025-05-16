@@ -13,5 +13,4 @@ public class LecteurBadge extends Serrure{
         super(nom, galaxie);
     }
 
-
 }

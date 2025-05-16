@@ -8,7 +8,7 @@ import fr.insarouen.iti.prog.aventure.spaceopera.Teleporteur;
 import fr.insarouen.iti.prog.aventure.spaceopera.VaisseauSpatial;
 import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
 
-public class ITISpaceOperaFactory{
+public class ITISpaceOperaFactory {
 
     public Galaxie creationGalaxie(String nom){
         return new Galaxie(nom);
@@ -26,7 +26,7 @@ public class ITISpaceOperaFactory{
         return new Teleporteur(nom, galaxie, vaisseauA, vaisseauB);
     }
 
-    public Teleporteur creationTeleporteurSerrure(String nom, Galaxie galaxie, VaisseauSpatial vaisseauA, VaisseauSpatial vaisseauB ) throws NomDEntiteDejaUtiliseDansLeMondeException{
+    public Teleporteur creationTeleporteurLecteurBadge(String nom, Galaxie galaxie, VaisseauSpatial vaisseauA, VaisseauSpatial vaisseauB ) throws NomDEntiteDejaUtiliseDansLeMondeException{
         LecteurBadge lecteurBadge = creationLecteurBadge(galaxie);
         return new Teleporteur(nom, galaxie, lecteurBadge, vaisseauA, vaisseauB);
     }

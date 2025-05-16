@@ -7,7 +7,7 @@ import fr.insarouen.iti.prog.aventure.elements.structure.Piece;
 import fr.insarouen.iti.prog.aventure.elements.objets.serrurerie.Cle;
 import fr.insarouen.iti.prog.aventure.elements.objets.serrurerie.Serrure;
 
-public class ITIAventureFactory{
+public class ITIAventureFactory {
 
     public Monde creationMonde(String nom){
         return new Monde(nom);

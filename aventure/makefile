@@ -21,16 +21,13 @@ clean:
 	rm -rf $(DOC_DIR)/*
 	
 play:
+	javac -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar -sourcepath ./src -d ./classes src/fr/insarouen/iti/prog/aventure/Main.java
 	java -classpath classes fr.insarouen.iti.prog.aventure.Main
 	
 jar:
 	jar -cvf $(LIB_DIR)/itiaventure.jar -C $(CLASS_DIR) .
 		
 bd:
-	javac -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar -sourcepath ./src -d ./classes src/fr/insarouen/iti/prog/aventure/MainBD.java
-	java -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar fr.insarouen.iti.prog.aventure.MainBD
-	
-executeMainBD:
 	javac -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar -sourcepath ./src -d ./classes src/fr/insarouen/iti/prog/aventure/MainBD.java
 	java -classpath ./classes:/usr/share/java/postgresql-jdbc4.jar fr.insarouen.iti.prog.aventure.MainBD
 

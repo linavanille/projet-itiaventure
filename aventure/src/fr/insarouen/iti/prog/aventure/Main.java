@@ -17,6 +17,7 @@ import fr.insarouen.iti.prog.aventure.data.LecteurBD;
 import fr.insarouen.iti.prog.aventure.data.LecteurDescription;
 import fr.insarouen.iti.prog.aventure.data.LecteurSerialisation;
 import fr.insarouen.iti.prog.aventure.data.LecteurDescriptionFactory;
+import fr.insarouen.iti.prog.aventure.data.LecteurDescriptionFactoryGlobal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -68,7 +69,8 @@ public class Main {
 		System.out.println("5/ enregistrer la partie dans la BD");
 		System.out.println("6/ charger la partie depuis la BD");
 	    System.out.println("7/ charger fichier description factory");
-		System.out.println("8/ quitter");
+		System.out.println("8/ charger fichier description factory global (itiaventure ou spaceopera)");
+		System.out.println("9/ quitter");
 	    try {
 		switch (scanner.nextInt()) {
 		case 0:
@@ -104,6 +106,9 @@ public class Main {
 			chargerFichierDescriptionFactory();
 			break;
 		case 8:
+			chargerFichierDescriptionFactoryGlobal();
+			break;
+		case 9:
 			System.out.println("A bientot !");
 		    scanner.close();
 		    System.exit(1);
@@ -142,6 +147,24 @@ public class Main {
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurDescriptionFactory(new FileReader(nomFichier));
+	    monde = lecteur.getMonde();
+		System.out.println(monde.getNom());
+	    conditionsDeFin = lecteur.getConditionsDeFin();
+	    simulateur = new Simulateur(monde, conditionsDeFin);
+	} catch (Throwable e) {
+	    lecteur = null;
+		e.printStackTrace();
+	    System.err.println("La lecture de votre fichier a rencontré un problème");
+	    System.err.println(String.format("---> %s ",e.getMessage()));
+	}
+    }
+
+	public static void chargerFichierDescriptionFactoryGlobal() {
+	System.out.println("Chargement d'un fichier textuel de description");
+	System.out.print("Veuillez saisir le nom du fichier : ");
+	nomFichier = scanner.next();
+	try {
+	    lecteur = new LecteurDescriptionFactoryGlobal(new FileReader(nomFichier));
 	    monde = lecteur.getMonde();
 		System.out.println(monde.getNom());
 	    conditionsDeFin = lecteur.getConditionsDeFin();
