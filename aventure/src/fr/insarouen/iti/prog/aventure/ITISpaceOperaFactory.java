@@ -10,40 +10,6 @@ import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
 import fr.insarouen.iti.prog.aventure.ITIAventureFactory;
 
 public class ITISpaceOperaFactory extends ITIAventureFactory {
-/*
-    public Galaxie creationMonde(String nom){
-        return new Galaxie(nom);
-    }
-
-    public Alien creationMonstre(String nom, Monde monde, int pointsVie, int pointsForce, Piece piece) throws NomDEntiteDejaUtiliseDansLeMondeException {
-        return new Alien(nom, monde, pointsVie, pointsForce, piece);
-    }
-
-    public VaisseauSpatial creationPiece(String nom, Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException  {
-        return new VaisseauSpatial(nom, monde);
-    }
-
-    public Teleporteur creationPorte(String nom, Monde monde, Piece pieceA, Piece pieceB) throws NomDEntiteDejaUtiliseDansLeMondeException{
-        return new Teleporteur(nom, monde, pieceA, pieceB);
-    }
-
-    public LecteurBadge creationPorteSerrure(String nom, Monde monde, Piece pieceA, Piece pieceB ) throws NomDEntiteDejaUtiliseDansLeMondeException{
-        Badge badge = creationSerrure(monde);
-        return new Lecteur(nom, monde, badge, pieceA, pieceB);
-    }
-
-    public Bagde creationSerrure(Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException{
-        return new Badge(monde);
-    }
-
-    public void creationCle(String nomPorte, Monde monde, String nomPiece)throws NomDEntiteDejaUtiliseDansLeMondeException {
-        Badge badge =((Porte)monde.getEntite(nomPorte)).getSerrure().creerCle();
-        ((Piece)monde.getEntite(nomPiece)).deposer(badge);
-    }
-
-*/
-
-
 
     public Galaxie creationMonde(String nom){
         return new Galaxie(nom);

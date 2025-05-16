@@ -13,4 +13,8 @@ public class Teleporteur extends Porte{
         super(nom, galaxie, lecteurBadge, vaisseauA, vaisseauB);
     }
 
+    public String toString() {
+        return  String.format("Teleporteur %s [VaisseauSpatialA= %s,  VaisseauSpatialB= %s, Etat= %s, LecteurBadge= %s ]",this.getNom(),this.pieceA,this.pieceB,this.getEtat(), this.getSerrure());
+    }
+
 }
