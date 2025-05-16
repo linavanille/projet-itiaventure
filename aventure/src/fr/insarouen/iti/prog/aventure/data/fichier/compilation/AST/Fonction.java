@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.List; 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.SuiteArguments;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.automate.Identifiant;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.automate.ArgumentSimple;
 
 public class Fonction{
 	private String lIdentifiant; 
