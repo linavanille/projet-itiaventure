@@ -9,37 +9,34 @@ import fr.insarouen.iti.prog.aventure.elements.objets.serrurerie.Serrure;
 
 public class ITIAventureFactory{
 
-    private Monde monde;
-
     public Monde creationMonde(String nom){
-        this.monde = new Monde(nom);
-        return this.monde;
+        return new Monde(nom);
     }
 
-    public Monstre creationMonstre(String nom, int pointsVie, int pointsForce, Piece piece) throws NomDEntiteDejaUtiliseDansLeMondeException {
-        return new Monstre(nom, this.monde, pointsVie, pointsForce, piece);
+    public Monstre creationMonstre(String nom, Monde monde, int pointsVie, int pointsForce, Piece piece) throws NomDEntiteDejaUtiliseDansLeMondeException {
+        return new Monstre(nom, monde, pointsVie, pointsForce, piece);
     }
 
-    public Piece creationPiece(String nom)  throws NomDEntiteDejaUtiliseDansLeMondeException  {
-        return new Piece(nom, this.monde);
+    public Piece creationPiece(String nom, Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException  {
+        return new Piece(nom, monde);
     }
 
-    public Porte creationPorte(String nom, Piece pieceA, Piece pieceB) throws NomDEntiteDejaUtiliseDansLeMondeException{
-        return new Porte(nom, this.monde, pieceA, pieceB);
+    public Porte creationPorte(String nom, Monde monde, Piece pieceA, Piece pieceB) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        return new Porte(nom, monde, pieceA, pieceB);
     }
 
-    public Porte creationPorteSerrure(String nom, Piece pieceA, Piece pieceB ) throws NomDEntiteDejaUtiliseDansLeMondeException{
-        Serrure serrure = creationSerrure();
-        return new Porte(nom, this.monde, serrure, pieceA, pieceB);
+    public Porte creationPorteSerrure(String nom, Monde monde, Piece pieceA, Piece pieceB ) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        Serrure serrure = creationSerrure(monde);
+        return new Porte(nom, monde, serrure, pieceA, pieceB);
     }
 
-    public Serrure creationSerrure() throws NomDEntiteDejaUtiliseDansLeMondeException{
-        return new Serrure(this.monde);
+    public Serrure creationSerrure(Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        return new Serrure(monde);
     }
 
-    public void creationCle(String nomPorte, String nomPiece)throws NomDEntiteDejaUtiliseDansLeMondeException {
-        Cle cle =((Porte)this.monde.getEntite(nomPorte)).getSerrure().creerCle();
-        ((Piece)this.monde.getEntite(nomPiece)).deposer(cle);
+    public void creationCle(String nomPorte, Monde monde, String nomPiece)throws NomDEntiteDejaUtiliseDansLeMondeException {
+        Cle cle =((Porte)monde.getEntite(nomPorte)).getSerrure().creerCle();
+        ((Piece)monde.getEntite(nomPiece)).deposer(cle);
     }
 }
 
