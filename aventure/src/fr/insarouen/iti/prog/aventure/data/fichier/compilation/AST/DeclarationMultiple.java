@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
 import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visiteur;
 
 public class DeclarationMultiple implements Visitable{
 	private List<DeclarationSimple> lesDS;
@@ -15,7 +16,7 @@ public class DeclarationMultiple implements Visitable{
 	}
 	
     public Collection<DeclarationSimple> getDeclarationsSimples() {
-        return lesDS.values();
+        return lesDS;
     }
 
 	@Override

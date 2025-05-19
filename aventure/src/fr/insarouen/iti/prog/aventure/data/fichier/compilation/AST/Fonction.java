@@ -8,7 +8,8 @@ import java.util.List;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.SuiteArguments;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimple;
-import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visiteur;
 
 public class Fonction{
 	private String lIdentifiant; 
@@ -27,7 +28,6 @@ public class Fonction{
     	return lesArguments;
     }
 
-	@Override
     public void accepter(Visiteur v) throws Throwable {
         v.visiter(this);
     } 

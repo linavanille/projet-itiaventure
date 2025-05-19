@@ -4,6 +4,7 @@ package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 // Méthode get valeurs 
 
 import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visiteur;
 
 public abstract class ArgumentSimple implements Visitable{
 	private String valeur; 
@@ -16,7 +17,6 @@ public abstract class ArgumentSimple implements Visitable{
 		return valeur;
 	}
 
-	@Override
     public void accepter(Visiteur v) throws Throwable {
         v.visiter(this);
     } 
