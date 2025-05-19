@@ -36,8 +36,8 @@ public class Monstre extends Vivant {
      * @param piece la pièce où le monstre est initialement situé.
      * @throws NomDEntiteDejaUtiliseDansLeMondeException si un autre élément porte déjà ce nom dans le monde.
      */
-    public Monstre(String nom, Monde monde, int pointsVie, int pointsForce, Piece piece) throws NomDEntiteDejaUtiliseDansLeMondeException{
-        super(nom, monde, pointsVie, pointsForce, piece);
+    public Monstre(String nom, Monde monde, int pointsVie, int pointsForce, Piece piece, Objet... objets) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        super(nom, monde, pointsVie, pointsForce, piece, objets);
     }
 
     /**

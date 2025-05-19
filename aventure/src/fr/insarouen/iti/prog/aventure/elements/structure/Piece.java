@@ -44,6 +44,20 @@ public class Piece extends ElementStructurel {
     }
 
     /**
+     * Constructeur pour créer une nouvelle pièce.
+     * 
+     * @param nom le nom de la pièce.
+     * @param monde le monde auquel appartient la pièce.
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException si le nom de la pièce est déjà utilisé dans le monde.
+     */
+    public Piece (String nom, Monde monde, Objet... objets) throws NomDEntiteDejaUtiliseDansLeMondeException{
+        super(nom, monde);
+        for (Objet o : objets){
+            this.tabObjets.put(o.getNom(),o);
+        }
+    }
+
+    /**
      * Vérifie si un objet est présent dans la pièce.
      * 
      * @param objet l'objet à vérifier.
