@@ -1,0 +1,12 @@
+\chapter{Design Pattern}
+
+L'objectif de cette partie est d'améliorer la qualit du code produit dans le projet ITIAventure pour accroître son potentiel de ré-utilisation dans de futurs projets similaires.
+Concrètement, l'application de Design Patterns de créations permet de découpler le code de créaton de certaines entités du fonctionnement global d'une partie.
+
+\section{ITIAventureFactory}
+L'objectif est d'externaliser le code de création de certaines entités dans une Abstract Factory.
+Pour cela, on crée une méthode de création de chaque classe piur chaque entité de notre monde.
+Par exemple, on créé le monde en appelant creerMonde(...) qui lui même appelle le constructeur de la classe Monde.
+\section{ITISpaceOpera}
+L'objectif est de ré-utiliser le code aventure déjà implémenté pour créer une variante portant sur une aventure furutiste qui se passe dans l'espace. \\
+Il est pour cela nécessaire de créer un nouveau package fr.insarouen.iti.prog.aventure.spaceopera.
