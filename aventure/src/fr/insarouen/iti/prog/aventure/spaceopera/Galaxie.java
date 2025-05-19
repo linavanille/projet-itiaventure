@@ -1,6 +1,7 @@
 package fr.insarouen.iti.prog.aventure.spaceopera;
 
 import fr.insarouen.iti.prog.aventure.Monde;
+import fr.insarouen.iti.prog.aventure.elements.Entite;
 
 public class Galaxie extends Monde{
 

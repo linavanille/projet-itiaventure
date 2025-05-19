@@ -22,15 +22,15 @@ public class Piece extends ElementStructurel {
 
     /** Contient les objets présents dans la pièce, indexés par leur nom.
     */
-    private Map <String,Objet> tabObjets= new HashMap<>();
+    protected Map <String,Objet> tabObjets= new HashMap<>();
 
     /** Contient les vivants présents dans la pièce, indexés par leur nom.
     */
-    private Map <String,Vivant> tabVivants = new HashMap<>();
+    protected Map <String,Vivant> tabVivants = new HashMap<>();
     
     /** Contient les portes de la pièce, indexées par leur nom.
     */
-    private Map<String,Porte> tabPortes = new HashMap<>();
+    protected Map<String,Porte> tabPortes = new HashMap<>();
 
     /**
      * Constructeur pour créer une nouvelle pièce.

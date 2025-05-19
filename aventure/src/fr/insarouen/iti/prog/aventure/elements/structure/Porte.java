@@ -28,16 +28,16 @@ public class Porte extends ElementStructurel implements Activable {
 
     /** Représente les deux pièces que cette porte relie (pieceA et pieceB).
     */
-    private Piece pieceA, pieceB;
+    protected Piece pieceA, pieceB;
     HashMap <String, Piece> lesPortes = new HashMap<String, Piece>();
 
     /** L'état actuel de la porte, qui peut être FERME, OUVERT ou VERROUILLE.
     */
-    private Etat etat;
+    protected Etat etat;
 
     /** La serrure associée à la porte, si la porte est verrouillée.
     */
-    private Serrure serrure;
+    protected Serrure serrure;
 
     /**
      * Constructeur pour créer une porte entre deux pièces.

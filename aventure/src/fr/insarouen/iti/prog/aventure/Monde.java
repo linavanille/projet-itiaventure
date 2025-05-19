@@ -21,12 +21,12 @@ public class Monde implements Serializable {
     /**
      * Le nom du monde.
      */
-    private String nom;
+    protected String nom;
 
     /**
      * La collection d'entités qui appartient à ce monde.
      */
-    private Map<String,Entite> tabEntite = new HashMap<>();
+    protected Map<String,Entite> tabEntite = new HashMap<>();
     
     /**
      * Constructeur de la classe Monde.

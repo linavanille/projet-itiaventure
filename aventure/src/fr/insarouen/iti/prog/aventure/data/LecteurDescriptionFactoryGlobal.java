@@ -68,16 +68,13 @@ public class LecteurDescriptionFactoryGlobal implements Lecteur{
                 break;
         }
 
-        if (!scanner.next().equals("Monde")){
-            System.out.println("Il faut un monde");
-            scanner.close();
-        }
-
-        this.monde = new Monde(scanner.next());
-        scanner.nextLine();
         while (scanner.hasNextLine()){
             String premier_mot=scanner.next();
             switch (premier_mot){
+                case "Monde":
+                    this.monde = factory.creationMonde(scanner.next());
+
+                    break;
                 case "Piece":
                     factory.creationPiece(scanner.next(), this.monde);
                     break;
