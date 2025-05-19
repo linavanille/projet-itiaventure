@@ -8,7 +8,7 @@ public class Nombre extends ArgumentSimple {
 		super(valeur);
 	}
 
-	public int getValeurEntier() {
+	public int getValeur() {
 		return Integer.parseInt(super.getValeur());
 	}
 }

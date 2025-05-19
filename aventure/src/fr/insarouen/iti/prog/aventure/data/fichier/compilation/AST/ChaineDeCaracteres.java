@@ -7,9 +7,5 @@ public class ChaineDeCaracteres extends ArgumentSimple {
 	public ChaineDeCaracteres(String valeur) {
 		super(valeur);
 	}
-
-	public String getTexte() {
-		return getValeur();
-	}
 }
 

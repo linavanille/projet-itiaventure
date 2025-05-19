@@ -5,6 +5,9 @@
  */
 package fr.insarouen.iti.prog.aventure.data.fichier.compilation.tableDesSymboles;
 
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.exception.IdentifiantInconnuException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,13 +16,13 @@ import java.util.Map;
  * @author delestre
  */
 public class TableDesSymboles {
-    private Map<Variable,Object> lesSymboles;
+    private Map<Identifiant,Object> lesObjets;
 
     /**
      * Constructeur d'une table de symboles vide
      */
     public TableDesSymboles() {
-        lesSymboles = new HashMap<>();
+        lesObjets = new HashMap<>();
     }
     
     /**
@@ -28,11 +31,10 @@ public class TableDesSymboles {
      * @return le type
      * @throws IdentifiantInconnuException
      */
-    public Object getObject(Variable id) {
-        if (lesSymboles.containsKey(id)){
-            return lesSymboles.get(id);
-        };
-        return null;
+    public Object getObject(Identifiant id) throws IdentifiantInconnuException {
+        if (lesObjets.containsKey(id))
+            return lesObjets.get(id);
+        throw new IdentifiantInconnuException(id);
     }   
     
     /**
@@ -40,8 +42,8 @@ public class TableDesSymboles {
      * @param id l'identifiant de la variable
      * @param t le type
      */
-    public void setObject(Variable id, Object o) {
-        lesSymboles.put(id,o);
+    public void setObject(Identifiant id, Object s) {
+        lesObjets.put(id,s);
     }
 
     /**
@@ -50,6 +52,6 @@ public class TableDesSymboles {
      */
     @Override
     public String toString() {
-        return "TableDesSymboles{" + "lesSymboles=" + lesSymboles + '}';
+        return "TableDesSymboles{" + "lesObjets=" + lesObjets + '}';
     }
 }
