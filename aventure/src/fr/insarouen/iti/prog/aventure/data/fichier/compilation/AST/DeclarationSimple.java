@@ -8,7 +8,7 @@ public class DeclarationSimple implements Visitable{
 	private Fonction laFonction; 
 	private Identifiant lIdentifiant; 
 	
-	public DeclarationSimple(Fonction laFonction, Identifiant lIdentifiant){
+	public DeclarationSimple(Identifiant lIdentifiant, Fonction laFonction){
 		this.laFonction = laFonction;
 		this.lIdentifiant = lIdentifiant; 
 	}

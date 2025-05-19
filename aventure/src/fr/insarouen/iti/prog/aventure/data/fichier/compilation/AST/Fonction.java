@@ -11,11 +11,12 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimpl
 import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
 import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visiteur;
 
-public class Fonction{
+public class Fonction extends ArgumentSimple{
 	private String lIdentifiant; 
 	private SuiteArguments lesArguments; 
 	
 	public Fonction(String lIdentifiant, SuiteArguments lesArguments){
+		super(lIdentifiant);
 		this.lIdentifiant = lIdentifiant; 
 		this.lesArguments = lesArguments; 
 	}
