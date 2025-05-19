@@ -24,16 +24,15 @@ package fr.insarouen.iti.prog.aventure.data.fichier.compilation.Analyseurs;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.insarouen.iti.prog.aventure.data.fichier.automates;
-import fr.insarouen.iti.prog.aventure.data.fichier.AST.DeclarationMultiple;
-import fr.insarouen.iti.prog.aventure.data.fichier.AST.DeclarationSimple;
-import fr.insarouen.iti.prog.aventure.data.fichier.AST.ArgumentSimple;
-import fr.insarouen.iti.prog.aventure.data.fichier.AST.Fonction;
-import fr.insarouen.iti.prog.aventure.data.fichier.AST.SuiteArguments;
-import fr.insarouen.iti.prog.aventure.data.fichier.automate.Identifiant;
-import fr.insarouen.iti.prog.aventure.data.fichier.automate.EnumerationCDF;
-import fr.insarouen.iti.prog.aventure.data.fichier.automate.ChaineDeCaracteres;
-import fr.insarouen.iti.prog.aventure.data.fichier.automate.Nombre;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.DeclarationMultiple;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.DeclarationSimple;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimple;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Fonction;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.SuiteArguments;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.EnumerationCDF;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ChaineDeCaracteres;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Nombre;
 
 public class AnalyseurSyntaxique {
 }
@@ -44,8 +43,8 @@ PARSER_END(AnalyseurSyntaxique)
 TOKEN : {
 	<PARAG: "(">
 	| <PARAD: ")">      
-	| <VIRG: ",">
-	| <AFF: "=">
+	| <VIRG: ", ">
+	| <AFF: " = ">
 	| <QUOTE: "\"">
 	| <NOMFONCTION: "monde" | "humain" | "piece" | "porte" | "cle" | "pied_de_biche" | "cdf_vivant_dans_piece" | "cdf_vivant_possede" | "cdf_conjonction" | "serrure" | "monstre">
 	| <NOMBRE: (["0"-"9"])+>
