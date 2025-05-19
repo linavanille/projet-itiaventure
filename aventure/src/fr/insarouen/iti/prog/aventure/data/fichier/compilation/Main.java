@@ -11,8 +11,8 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Nombre;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.SuiteArguments;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.Analyseurs.ParseException;
-import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
-import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visiteur;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visiteur;
 
 import java.io.BufferedReader;
 import java.io.File;

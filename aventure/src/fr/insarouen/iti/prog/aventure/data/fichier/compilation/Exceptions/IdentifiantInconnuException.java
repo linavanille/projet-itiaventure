@@ -1,4 +1,4 @@
-package fr.insarouen.iti.prog.aventure.data.fichier.compilation.execeptions;
+package fr.insarouen.iti.prog.aventure.data.fichier.compilation.exceptions;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
 

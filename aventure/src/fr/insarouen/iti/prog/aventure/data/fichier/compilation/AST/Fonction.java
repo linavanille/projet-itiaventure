@@ -8,8 +8,8 @@ import java.util.List;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.SuiteArguments;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimple;
-import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
-import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visiteur;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visiteur;
 
 public class Fonction extends ArgumentSimple{
 	private String lIdentifiant; 

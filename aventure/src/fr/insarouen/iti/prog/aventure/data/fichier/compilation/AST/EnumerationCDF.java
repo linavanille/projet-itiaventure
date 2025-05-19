@@ -9,7 +9,7 @@ public class EnumerationCDF extends ArgumentSimple {
 		super(valeur);
 	}
 
-	public EtatDuJeu getValeur() {
+	public EtatDuJeu getValeurEnum() {
 		switch (getValeur().toUpperCase()) {
 			case "ECHEC":
 				return EtatDuJeu.ECHEC;

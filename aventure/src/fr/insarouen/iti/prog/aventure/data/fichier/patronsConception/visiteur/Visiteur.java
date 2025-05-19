@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur;
+package fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

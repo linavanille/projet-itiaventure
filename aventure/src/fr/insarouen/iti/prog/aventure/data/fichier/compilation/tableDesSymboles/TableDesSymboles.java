@@ -6,7 +6,7 @@
 package fr.insarouen.iti.prog.aventure.data.fichier.compilation.tableDesSymboles;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
-import fr.insarouen.iti.prog.aventure.data.fichier.compilation.exception.IdentifiantInconnuException;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.exceptions.IdentifiantInconnuException;
 
 import java.util.HashMap;
 import java.util.Map;
