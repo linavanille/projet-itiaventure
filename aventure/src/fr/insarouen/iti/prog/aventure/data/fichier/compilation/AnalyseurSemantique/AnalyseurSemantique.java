@@ -1,4 +1,4 @@
-package fr.insarouen.iti.prog.aventure.data.fichier.compilation.analyseurSemantique;
+package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AnalyseurSemantique;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.Visiteur;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.tableDesSymboles.TableDesSymboles;
@@ -18,7 +18,7 @@ public class AnalyseurSemantique implements Visiteur {
 
     public void visiter(DeclarationMultiple dm) throws Throwable {
         for (DeclarationSimple ds : dm.getDeclarationsSimples()) {
-            dm.accepter(this)
+            dm.accepter(this);
         }
     }
 
