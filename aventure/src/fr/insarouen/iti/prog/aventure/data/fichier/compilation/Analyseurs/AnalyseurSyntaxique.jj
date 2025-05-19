@@ -19,7 +19,7 @@ options {
 }
 
 PARSER_BEGIN(AnalyseurSyntaxique)
-package fr.insarouen.iti.prog.aventure.data.fichier.Analyseurs;
+package fr.insarouen.iti.prog.aventure.data.fichier.compilation.Analyseurs;
 
 import java.util.ArrayList;
 import java.util.List;
