@@ -8,19 +8,28 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visiteur;
 
 public class DeclarationMultiple implements Visitable{
-	private List<DeclarationSimple> lesDS;
+	private List<DeclarationSimple> lesDS = null;
 	
 	public DeclarationMultiple(List<DeclarationSimple> desDS){
-		lesDS = new ArrayList<>();
-		lesDS.addAll(desDS);
+		this.lesDS = new ArrayList<>();
+		this.lesDS.addAll(desDS);
 	}
 	
     public Collection<DeclarationSimple> getDeclarationsSimples() {
-        return lesDS;
+        return this.lesDS;
     }
 
 	@Override
     public void accepter(Visiteur v) throws Throwable {
         v.visiter(this);
-    }  
+    }
+
+    @Override
+    public String toString(){
+        String retour = "Declarations multiples :";
+        for (DeclarationSimple ds : this.lesDS.toArray(new DeclarationSimple[0])){
+            retour = String.format("%s \n %s",retour,ds);
+        }
+        return retour;
+    } 
 }

@@ -107,7 +107,7 @@ ArgumentSimple argumentSimple() :
   |t = <ENUM> {res = new EnumerationCDF(t.image);}
   |f = fonction() {res = f;}
   |t = <ID> {res = new Identifiant(t.image);}
-  |t = <CHAINE> { res = new ChaineDeCaracteres(t.image.substring(1, t.image.length() - 1)); })
+  |t = <CHAINE> {res = new ChaineDeCaracteres(t.image.substring(1, t.image.length() - 1)); })
     {return res;}}
 	
 	

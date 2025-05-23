@@ -26,4 +26,9 @@ public class DeclarationSimple implements Visitable{
     public void accepter(Visiteur v) throws Throwable {
         v.visiter(this);
     } 
+
+	@Override
+    public String toString(){
+        return String.format("Déclaration Simple : \n \t Identifiant : %s \n \t Fonction : %s",this.lIdentifiant, this.laFonction);
+    } 
 }

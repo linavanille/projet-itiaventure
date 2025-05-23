@@ -32,4 +32,9 @@ public class Fonction extends ArgumentSimple{
     public void accepter(Visiteur v) throws Throwable {
         v.visiter(this);
     } 
+
+	@Override
+	public String toString() {
+		return String.format("\n \t \t Classe : %s \n \t \t Arguments : %s",this.lIdentifiant, this.lesArguments);
+	}
 }

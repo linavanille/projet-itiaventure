@@ -32,8 +32,9 @@ public class TableDesSymboles {
      * @throws IdentifiantInconnuException
      */
     public Object getObject(Identifiant id) throws IdentifiantInconnuException {
-        if (lesObjets.containsKey(id))
+        if (lesObjets.containsKey(id)){
             return lesObjets.get(id);
+        }
         throw new IdentifiantInconnuException(id);
     }   
     
@@ -52,6 +53,6 @@ public class TableDesSymboles {
      */
     @Override
     public String toString() {
-        return "TableDesSymboles{" + "lesObjets=" + lesObjets + '}';
+        return this.lesObjets.entrySet().toString();
     }
 }

@@ -3,7 +3,6 @@ package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimple;
 
 public class Identifiant extends ArgumentSimple {
-	private String valeur;  
 	
 	public Identifiant(String valeur) {
 		super(valeur);

@@ -34,7 +34,6 @@ public class Main{
     	try (BufferedReader fluxTexte = new BufferedReader(new FileReader(nomFichierConfiguration))) {
             String ligne = fluxTexte.readLine();
             int numeroLigne = 1;
-
             while (ligne != null) {
             	if (!ligne.trim().isEmpty()) {
 		        	try {

@@ -22,4 +22,13 @@ public class SuiteArguments implements Visitable{
     public void accepter(Visiteur v) throws Throwable {
         v.visiter(this);
     } 
+
+    @Override
+    public String toString(){
+        String retour = "";
+        for (ArgumentSimple ds : this.lesArgs.toArray(new ArgumentSimple[0])){
+            retour = String.format("%s | %s",retour,ds);
+        }
+        return retour;
+    }
 }
