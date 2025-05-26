@@ -8,6 +8,13 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Scanner;
 
+import java.io.FileReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import fr.insarouen.iti.prog.aventure.data.fichier.compilation.Analyseurs.ParseException;
+import java.io.IOException;
+
 import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
 import fr.insarouen.iti.prog.aventure.data.Enregistreur;
 import fr.insarouen.iti.prog.aventure.data.EnregistreurBD;
@@ -18,6 +25,7 @@ import fr.insarouen.iti.prog.aventure.data.LecteurDescription;
 import fr.insarouen.iti.prog.aventure.data.LecteurSerialisation;
 import fr.insarouen.iti.prog.aventure.data.LecteurDescriptionFactory;
 import fr.insarouen.iti.prog.aventure.data.LecteurDescriptionFactoryGlobal;
+import fr.insarouen.iti.prog.aventure.data.LecteurCompilation;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -92,7 +100,7 @@ public class Main {
 		System.out.println("6/ Charger la partie en cours depuis la base de données");
 	    System.out.println("7/ Charger un fichier de description factory");
 		System.out.println("8/ Charger un fichier de description factory global (itiaventure ou spaceopera)");
-		//System.out.println("9/ Charger un fichier de description via compilation");
+		System.out.println("9/ Charger un fichier de description via compilation");
 		System.out.println("10/ Quitter");
 	    try {
 		switch (scanner.nextInt()) {
@@ -289,7 +297,21 @@ public class Main {
 	}
 
 	public static void chargerFichierCompilation() {
-    	System.out.println("Cette fonctionnalité n'est pas encore implémentée.");
+    	System.out.println("Chargement d'un fichier textuel de description");
+		System.out.print("Veuillez saisir le nom du fichier: ");
+		nomFichier = scanner.next();
+		try (FileReader fluxTexte = new FileReader(nomFichier)) {
+            LecteurCompilation lecteur = new LecteurCompilation(fluxTexte);
+			monde = lecteur.getMonde();
+			conditionsDeFin = lecteur.getConditionsDeFin();
+			simulateur = new Simulateur(monde, conditionsDeFin);            
+        } 
+		catch (FileNotFoundException e) {
+        	System.err.println("Fichier non trouvé : " + nomFichier);            
+        } 
+		catch (IOException e) {  
+        	System.err.println("Erreur d'entrée ou sortie : " + e.getMessage());                      
+        }
 	}	
 
 }

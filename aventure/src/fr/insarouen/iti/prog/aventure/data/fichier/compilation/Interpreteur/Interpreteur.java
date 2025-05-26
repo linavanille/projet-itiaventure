@@ -17,6 +17,7 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.exceptions.Identi
 
 import java.util.Collection;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import fr.insarouen.iti.prog.aventure.Monde;
 import fr.insarouen.iti.prog.aventure.elements.structure.Porte;
@@ -37,7 +38,7 @@ import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
 public class Interpreteur implements Visiteur {
     private TableDesSymboles tds;
     private Monde leMonde=null;
-    private ArrayList<ConditionDeFin> lesCDF;
+    private Collection<ConditionDeFin> lesCDF;
 
     public Interpreteur(TableDesSymboles tds){
         this.tds = tds;
@@ -54,6 +55,9 @@ public class Interpreteur implements Visiteur {
         Identifiant id = ds.getIdentifiant();
         Object o = this.creerObject(ds.getFonction());
         this.tds.setObject(id,o);
+        if (o instanceof ConditionDeFin){
+            this.lesCDF.add((ConditionDeFin)o);
+        }
     }
 
     public void visiter(Fonction fct) throws Throwable {
@@ -63,6 +67,9 @@ public class Interpreteur implements Visiteur {
 
     public Monde getMonde(){
         return this.leMonde;
+    }
+    public Collection<ConditionDeFin> getConditionsDeFin(){
+        return this.lesCDF;
     }
 
     public Object creerObject(Fonction fct) throws Throwable {
@@ -82,19 +89,10 @@ public class Interpreteur implements Visiteur {
             case "piece" : return this.creationPiece(args);
             case "porte" : return this.creationPorte(args);
             case "cle" : return this.creationCle(args);
-            case "pied_de_biche" : return creationPDB(args);
-            case "cdf_vivant_dans_piece" : 
-                ConditionDeFin temp = creationCDFVDP(args);
-                this.lesCDF.add(temp);
-                return temp;
-            case "cdf_vivant_possede" : 
-                ConditionDeFin temp = creationCDFVDP(args);
-                this.lesCDF.add(temp);
-                return creationCDFVP(args);
-            case "cdf_conjonction" : 
-                ConditionDeFin temp = creationCDFVDP(args);
-                this.lesCDF.add(temp);
-                return creationCDFC(args);
+            case "pied_de_biche" : return this.creationPDB(args);
+            case "cdf_vivant_dans_piece" : return this.creationCDFVDP(args);
+            case "cdf_vivant_possede" : return this.creationCDFVP(args);
+            case "cdf_conjonction" : return this.creationCDFC(args);
             case "monstre" : return creationMonstre(args);
             default : return null;
         }

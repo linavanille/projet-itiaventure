@@ -97,8 +97,6 @@ public class LecteurDescriptionFactoryGlobal implements Lecteur{
                     System.out.println(String.format("Mot cle inconnu : %s", premier_mot));
             }
         }
-
-        System.out.println("Le monde a été chargé avec succès !");
         scanner.close();
     }
 

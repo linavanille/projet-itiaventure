@@ -1,4 +1,4 @@
-package fr.insarouen.iti.prog.aventure.data.fichier.compilation;
+package fr.insarouen.iti.prog.aventure.data;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.Analyseurs.AnalyseurSyntaxique;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimple;
@@ -16,23 +16,40 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.interpreteur.Interpreteur;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.tableDesSymboles.TableDesSymboles;
 import fr.insarouen.iti.prog.aventure.Monde;
+import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
 
 import java.io.Reader;
 import java.io.IOException;
+
+import java.util.Collection;
 
 import fr.insarouen.iti.prog.aventure.data.Lecteur;
 
 public class LecteurCompilation implements Lecteur{
 
     private Reader reader;
+    private Monde monde;    
+    private Collection<ConditionDeFin> conditions;
 
-    private static void traiterFichier(Reader nomFichierConfiguration) {
+    @Override
+    public Monde getMonde() {
+        return this.monde;
+    }
+
+    @Override
+    public Collection<ConditionDeFin> getConditionsDeFin() {
+        return this.conditions;
+    }
+
+    public LecteurCompilation(Reader fluxTexte) {
         try {
             AnalyseurSyntaxique analyseur = new AnalyseurSyntaxique(fluxTexte);
             DeclarationMultiple declarations = analyseur.declarationMultiple();
             TableDesSymboles tds = new TableDesSymboles();
             Interpreteur interpreteur = new Interpreteur(tds);
             declarations.accepter(interpreteur);
+            this.monde = interpreteur.getMonde();
+            this.conditions = interpreteur.getConditionsDeFin();
 
         } 
         catch (ParseException e) {
@@ -43,11 +60,5 @@ public class LecteurCompilation implements Lecteur{
         }
     }
 
-    public static void main(BufferedReader flux) throws ParseException {
-		if (parametresOK(args))
-			traiterFichier(args[0]);
-		else
-			afficherAide();
-	}
 }
 
