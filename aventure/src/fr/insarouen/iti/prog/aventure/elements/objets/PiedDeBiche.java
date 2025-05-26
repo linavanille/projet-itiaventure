@@ -1,46 +1,34 @@
-package fr.insarouen.iti.prog.aventure.elements.objets ;
+package fr.insarouen.iti.prog.aventure.elements.objets;
 
 import fr.insarouen.iti.prog.aventure.Monde;
 import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
 import fr.insarouen.iti.prog.aventure.*;
 
 /**
- * Représente un objet de type "PiedDeBiche" dans le monde du jeu.
- * <p>
- * Cette classe hérite de la classe {@link Objet} et représente un pied-de-biche, un objet
- * qui peut être déplacé dans le jeu. Un pied-de-biche peut être utilisé pour diverses
- * interactions dans le monde de l'aventure, comme l'ouverture de portes ou le forçage
- * de mécanismes.
- * </p>
+ * Classe représentant un objet PiedDeBiche dans le monde du jeu.
+ * Cet objet peut être utilisé pour forcer ou interagir avec certains éléments.
  */
-public class PiedDeBiche extends Objet{
+public class PiedDeBiche extends Objet {
 
-    /**
-     * Constructeur pour créer un pied-de-biche avec un nom dans un monde donné.
-     * <p>
-     * Ce constructeur initialise un pied-de-biche avec un nom unique dans un monde spécifique.
-     * Si un objet avec ce nom existe déjà dans le monde, une exception {@link NomDEntiteDejaUtiliseDansLeMondeException}
-     * sera lancée.
-     * </p>
-     * 
-     * @param nom le nom de l'objet pied-de-biche.
-     * @param monde le monde dans lequel l'objet est créé.
-     * @throws NomDEntiteDejaUtiliseDansLeMondeException si un objet avec le même nom existe déjà dans le monde.
-     * @throws EntiteDejaDansUnAutreMondeException si l'entité est déjà présente dans un autre monde.
-     */
-    public PiedDeBiche (String nom, Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException, EntiteDejaDansUnAutreMondeException{
-        super(nom, monde);
-    }
+	/**
+	 * Crée un pied-de-biche dans le monde.
+	 *
+	 * @param nom Nom de l'objet.
+	 * @param monde Monde dans lequel il est placé.
+	 * @throws NomDEntiteDejaUtiliseDansLeMondeException si le nom est déjà pris.
+	 * @throws EntiteDejaDansUnAutreMondeException si l'entité existe dans un autre monde.
+	 */
+	public PiedDeBiche(String nom, Monde monde) throws NomDEntiteDejaUtiliseDansLeMondeException, EntiteDejaDansUnAutreMondeException {
+		super(nom, monde);
+	}
 
-    /**
-     * Détermine si l'objet est déplaçable.
-     * <p>
-     * Un pied-de-biche est un objet qui peut être déplacé dans le monde du jeu.
-     * </p>
-     * 
-     * @return {@code true} car un pied-de-biche est déplaçable.
-     */
-    public boolean estDeplacable(){
-        return true;
-    }
+	/**
+	 * Retourne vrai car un pied-de-biche est toujours déplaçable.
+	 *
+	 * @return true.
+	 */
+	public boolean estDeplacable() {
+		return true;
+	}
 }
+
