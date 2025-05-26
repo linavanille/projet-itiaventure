@@ -27,62 +27,85 @@ import java.sql.SQLException;
 import java.lang.ClassNotFoundException;
 
 /**
- * Classe Main
- * Permet de jouer, charger ou sauvegarder une partie, ou charger un fichier de description 
-*/
+ * Classe main permettant d'interagir avec le jeu Aventure.
+ * Elle propose un menu pour :
+ * <ul>
+ *   <li>jouer un tour ou toute une partie</li>
+ *   <li>charger un fichier de description (plusieurs types)</li>
+ *   <li>charger ou sauvegarder une partie via sérialisation</li>
+ *   <li>enregistrer/charger une partie depuis une base de données</li>
+ * </ul>
+ */
 public class Main {
+
 	/**Constructeur par défaut pour le main */
 	public Main(){}
+
 	/** le nom du fichier  */
     private static String nomFichier;
+
 	/** le lecteur pour lire la serialisation */
     private static Lecteur lecteur=null;
+
 	/** l'enregistreur pour enregistrer la serialisation */
     private static Enregistreur enregistreur=null;
+
 	/**le simulateur pour simuler */
     private static Simulateur simulateur=null;
+
 	/**le monde de la partie */
     private static Monde monde=null;
+
 	/**les conditions de fin de la partie */
     private static Collection<ConditionDeFin> conditionsDeFin=null;
+
 	/**le scanner pour lire et ou enregistrer */
     private static Scanner scanner = new Scanner(System.in);
 
+	/** URL de connexion à la base de données PostgreSQL. */
 	private static String url = "jdbc:postgresql://iti-pg.insa-rouen.fr:5432/grtt8";
+	
+	/** Nom d'utilisateur de la base de données. */
 	private static String login = "grtt8";
+
+	/** Mot de passe de la base de données. */
 	private static String password = "grtt8";
 	
 	/**
-	 * Main 
-	 * @param args les arguments du main
-	 * @throws ITIAventureException si problème
+	 * Méthode principale du programme.
+	 * Affiche un menu permettant de lancer diverses actions sur le jeu.
+	 *
+	 * @param args Les arguments passés au programme.
+	 * @throws ITIAventureException Si une erreur liée au jeu se produit.
+	 * @throws SQLException Si une erreur SQL survient.
 	 */
     public static void main(String[] args) throws ITIAventureException, SQLException {
 	while (true) {
 	    System.out.println();
 	    System.out.println();
-	    System.out.println("0/ jouer un tour");
-	    System.out.println("1/ jouer jusqu'à la fin sans possibilité d'arrêter");
-	    System.out.println("2/ charger fichier de description");
-	    System.out.println("3/ sauvegarder une partie");
-	    System.out.println("4/ charger une sauvegarde");
-		System.out.println("5/ enregistrer la partie dans la BD");
-		System.out.println("6/ charger la partie depuis la BD");
-	    System.out.println("7/ charger fichier description factory");
-		System.out.println("8/ charger fichier description factory global (itiaventure ou spaceopera)");
-		System.out.println("9/ quitter");
+	    System.out.println("0/ Jouer un tour");
+	    System.out.println("1/ Jouer jusqu'à la fin sans possibilité d'arrêter");
+	    System.out.println("2/ Charger un fichier de description");
+	    System.out.println("3/ Sauvegarder une partie");
+	    System.out.println("4/ Charger une sauvegarde");
+		System.out.println("5/ Enregistrer la partie en cours dans la base de données");
+		System.out.println("6/ Charger la partie en cours depuis la base de données");
+	    System.out.println("7/ Charger un fichier de description factory");
+		System.out.println("8/ Charger un fichier de description factory global (itiaventure ou spaceopera)");
+		//System.out.println("9/ Charger un fichier de description via compilation");
+		System.out.println("10/ Quitter");
 	    try {
 		switch (scanner.nextInt()) {
 		case 0:
 		    if (simulateur == null) {
-			System.out.println("Vous n'avez pas de partie en cours");
+			System.out.println("Impossible de jouer un tour. Vous n'avez pas de partie en cours");
 		    } else {
 			simulateur.executerUnTour();
 		    }
 		    break;
 		case 1:
 		    if (simulateur == null) {
-			System.out.println("Vous n'avez pas de partie en cours");
+			System.out.println("Impossible de jouer un tour. Vous n'avez pas de partie en cours");
 		    } else {
 			simulateur.executerJusquALaFin();
 		    }
@@ -109,25 +132,29 @@ public class Main {
 			chargerFichierDescriptionFactoryGlobal();
 			break;
 		case 9:
-			System.out.println("A bientot !");
+			chargerFichierCompilation();
+			break;
+		case 10:
+			System.out.println("EXIT");
 		    scanner.close();
 		    System.exit(1);
 		    break;
 		default:
-		    System.err.println("Choisissez une valeur entre 1 et 8 compris.");
+		    System.err.println("Choisissez une option (valeur entre 0 et 10)");
 		}
 	    } catch (java.util.InputMismatchException e) {
-		System.out.println("Saisie incorrecte");
+		System.out.println("Veuillez saisir une option existante");
 		scanner.nextLine();
 	    }
 	}
     }
+
 	/**
-	 * Méthode permettant de charger un fichier de description 
+	 * Charge un fichier de description textuel standard et initialise une partie.
 	 */
     public static void chargerFichierDescription() {
 	System.out.println("Chargement d'un fichier textuel de description");
-	System.out.print("Veuillez saisir le nom du fichier : ");
+	System.out.print("Veuillez saisir le nom du fichier: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurDescription(new FileReader(nomFichier));
@@ -141,9 +168,12 @@ public class Main {
 	}
     }
 
+	/**
+	 * Charge un fichier de description via la factory de base et initialise une partie.
+	 */
 	public static void chargerFichierDescriptionFactory() {
 	System.out.println("Chargement d'un fichier textuel de description");
-	System.out.print("Veuillez saisir le nom du fichier : ");
+	System.out.print("Veuillez saisir le nom du fichier: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurDescriptionFactory(new FileReader(nomFichier));
@@ -159,9 +189,12 @@ public class Main {
 	}
     }
 
+	/**
+	 * Charge un fichier de description via une factory globale prenant en charge différents types (ex : itiaventure, spaceopera).
+	 */
 	public static void chargerFichierDescriptionFactoryGlobal() {
 	System.out.println("Chargement d'un fichier textuel de description");
-	System.out.print("Veuillez saisir le nom du fichier : ");
+	System.out.print("Veuillez saisir le nom du fichier: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurDescriptionFactoryGlobal(new FileReader(nomFichier));
@@ -178,14 +211,14 @@ public class Main {
     }
 
 	/**
-	 * Méthode permettant de sauvegarder une partie en cours par serialisation 
+	 * Sauvegarde la partie en cours dans un fichier via la sérialisation.
 	 */
     public static void sauvegarderFichierSerialisation() {
 	System.out.println("Sauvegarde de la partie en cours");
 	if (monde == null) {
 	    System.out.println("Vous n'avez pas de partie en cours");
 	} else {
-	    System.out.print("Veuillez saisir le nom du fichier : ");
+	    System.out.print("Veuillez saisir le nom du fichier: ");
 	    nomFichier = scanner.next();
 	    try {
 		enregistreur = new EnregistreurSerialisation(new ObjectOutputStream(new FileOutputStream(nomFichier)));
@@ -199,11 +232,11 @@ public class Main {
     }
 
 	/**
-	 * Méthode permettant de charger une partie en cours par serialisation 
+	 * Charge une partie précédemment sauvegardée via la sérialisation.
 	 */
     public static void chargerFichierSerialisation() {
 	System.out.println("Chargement d'une sauvegarde");
-	System.out.print("Veuillez saisir le nom du fichier : ");
+	System.out.print("Veuillez saisir le nom du fichier: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurSerialisation(new ObjectInputStream(new FileInputStream(nomFichier)));
@@ -217,6 +250,11 @@ public class Main {
 	}
     }
 
+	/**
+	 * Enregistre la partie en cours dans la base de données.
+	 *
+	 * @throws SQLException Si une erreur survient lors de l'enregistrement dans la base.
+	 */
 	public static void enregistrerBD() throws SQLException{
 		Connection connection = DriverManager.getConnection(url, login, password);
 
@@ -229,6 +267,11 @@ public class Main {
         }   
 	}
 
+	/**
+	 * Charge une partie enregistrée dans la base de données.
+	 *
+	 * @throws SQLException Si une erreur survient lors du chargement depuis la base.
+	 */
 	public static void chargerBD() throws SQLException{
 		Connection connection = DriverManager.getConnection(url, login, password);
 
@@ -244,5 +287,9 @@ public class Main {
 
 		connection.close();
 	}
-			
+
+	public static void chargerFichierCompilation() {
+    	System.out.println("Cette fonctionnalité n'est pas encore implémentée.");
+	}	
+
 }
