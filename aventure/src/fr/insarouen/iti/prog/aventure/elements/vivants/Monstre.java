@@ -7,76 +7,65 @@ import fr.insarouen.iti.prog.aventure.elements.structure.Piece;
 import fr.insarouen.iti.prog.aventure.elements.structure.Porte;
 import fr.insarouen.iti.prog.aventure.elements.Etat;
 
-import java.util.stream.Collectors;
 import java.util.List;
 import java.util.ArrayList;
-
-import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
-import fr.insarouen.iti.prog.aventure.elements.structure.ObjetAbsentDeLaPieceException;
-import fr.insarouen.iti.prog.aventure.elements.structure.PorteFermeException;
-import fr.insarouen.iti.prog.aventure.elements.structure.PorteInexistanteDansLaPieceException;
-import fr.insarouen.iti.prog.aventure.elements.objets.ObjetNonDeplacableException;
-import fr.insarouen.iti.prog.aventure.elements.structure.VivantAbsentDeLaPieceException;
-import fr.insarouen.iti.prog.aventure.elements.ActivationImpossibleAvecObjetException;
+import java.util.stream.Collectors;
 
 /**
- * La classe {@code Monstre} représente un vivant particulier capable de se déplacer automatiquement 
- * entre les pièces du monde en interagissant avec les portes et les objets.
+ * Classe représentant un monstre autonome.
+ * Le monstre perd 1 point de vie à chaque tour, franchit des portes ouvertes,
+ * ramasse tous les objets de la pièce, puis les dépose.
  */
 public class Monstre extends Vivant {
 
-    /**
-     * Construit un nouveau {@code Monstre} avec un nom, un monde, un nombre de points de vie, 
-     * un nombre de points de force et une pièce de départ.
-     *
-     * @param nom le nom du monstre.
-     * @param monde le monde auquel appartient le monstre.
-     * @param pointsVie le nombre de points de vie initial du monstre.
-     * @param pointsForce le nombre de points de force initial du monstre.
-     * @param piece la pièce où le monstre est initialement situé.
-     * @throws NomDEntiteDejaUtiliseDansLeMondeException si un autre élément porte déjà ce nom dans le monde.
-     */
-    public Monstre(String nom, Monde monde, int pointsVie, int pointsForce, Piece piece, Objet... objets) throws NomDEntiteDejaUtiliseDansLeMondeException{
-        super(nom, monde, pointsVie, pointsForce, piece, objets);
-    }
+	/**
+	 * Constructeur du monstre.
+	 *
+	 * @param nom Nom du monstre.
+	 * @param monde Monde dans lequel il évolue.
+	 * @param pointsVie Points de vie.
+	 * @param pointsForce Points de force.
+	 * @param piece Pièce initiale.
+	 * @param objets Objets possédés.
+	 */
+	public Monstre(String nom, Monde monde, int pointsVie, int pointsForce, Piece piece, Objet... objets)
+			throws fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException {
+		super(nom, monde, pointsVie, pointsForce, piece, objets);
+	}
 
-    /**
-     * Exécute les actions du monstre :
-     * <ul>
-     *   <li> Diminue ses points de vie de 1 s'il est encore en vie. </li>
-     *   <li> Cherche une porte non verrouillée, l'ouvre si nécessaire, et la franchit. </li>
-     *   <li> Ramasse tous les objets de la nouvelle pièce. </li>
-     *   <li> Dépose tous les objets qu'il possède. </li>
-     * </ul>
-     *
-     * @throws ITIAventureException si une erreur survient lors de l'activation d'une porte ou de la manipulation d'objets.
-     */
-    public void executer() throws ITIAventureException{
-        if (this.getPointVie() >0){
-            this.setPointVie(this.getPointVie()-1);
-        }
-
-        List<Porte> portes = this.getPiece().getPortes().stream().filter(p->p.getEtat()!=Etat.VERROUILLE).collect(Collectors.toList());
-
-        if (!(portes.isEmpty())) {
-            Porte porte = portes.get(0);
-            if (porte.getEtat() == Etat.FERME) {
-                porte.activer();
-            }
-            this.franchir(porte);
-
-            List<Objet> objetsmonstre = new ArrayList<>(this.getObjets());
-            List<Objet> objetspiece = new ArrayList<>(this.getPiece().getObjets());
-            
-            while (!(objetspiece.isEmpty())){
-                this.prendre(objetspiece.get(0));
-                objetspiece.remove(0); 
-            }
-
-            while (!(objetsmonstre.isEmpty())){
-                this.deposer(objetsmonstre.get(0));
-                objetsmonstre.remove(0);
-            }
+	/**
+	 * Comportement automatique du monstre à chaque tour :
+	 * - Perd un point de vie.
+	 * - Franchit la première porte ouverte ou déverrouillable.
+	 * - Ramasse tous les objets de la nouvelle pièce.
+	 * - Dépose tous les objets qu’il possède.
+	 */
+	public void executer() throws ITIAventureException {
+		if (this.getPointVie() > 0) {
+			this.setPointVie(this.getPointVie() - 1);
 		}
-    }
+
+		List<Porte> portes = this.getPiece().getPortes().stream()
+			.filter(p -> p.getEtat() != Etat.VERROUILLE)
+			.collect(Collectors.toList());
+
+		if (!portes.isEmpty()) {
+			Porte porte = portes.get(0);
+			if (porte.getEtat() == Etat.FERME) {
+				porte.activer();
+			}
+			this.franchir(porte);
+
+			List<Objet> objetsPiece = new ArrayList<>(this.getPiece().getObjets());
+			for (Objet o : objetsPiece) {
+				this.prendre(o);
+			}
+
+			List<Objet> objetsMonstre = new ArrayList<>(this.getObjets());
+			for (Objet o : objetsMonstre) {
+				this.deposer(o);
+			}
+		}
+	}
 }
+
