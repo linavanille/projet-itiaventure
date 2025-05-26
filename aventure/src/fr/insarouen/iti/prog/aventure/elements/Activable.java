@@ -33,3 +33,5 @@ public interface Activable {
      */
     boolean activableAvec(Objet objet);   
 }
+
+

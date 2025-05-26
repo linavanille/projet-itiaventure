@@ -7,11 +7,11 @@ import java.io.Serializable;
 
 /**
  * Classe abstraite représentant une entité dans le monde du jeu.
- * <p>
+ *
  * Une entité est un objet qui a un nom unique dans un monde donné. Elle est associée à un monde spécifique
  * et possède des comportements fondamentaux tels que l'égalité, le calcul de son code de hachage et une
  * représentation sous forme de chaîne de caractères.
- * </p>
+ * 
  */
 public abstract class Entite implements Serializable{
 
