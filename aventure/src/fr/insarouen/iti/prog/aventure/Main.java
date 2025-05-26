@@ -8,10 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Scanner;
 
-import java.io.FileReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.Analyseurs.ParseException;
 import java.io.IOException;
 
@@ -91,29 +89,30 @@ public class Main {
 	while (true) {
 	    System.out.println();
 	    System.out.println();
-	    System.out.println("0/ Jouer un tour");
-	    System.out.println("1/ Jouer jusqu'à la fin sans possibilité d'arrêter");
-	    System.out.println("2/ Charger un fichier de description");
-	    System.out.println("3/ Sauvegarder une partie");
-	    System.out.println("4/ Charger une sauvegarde");
-		System.out.println("5/ Enregistrer la partie en cours dans la base de données");
-		System.out.println("6/ Charger la partie en cours depuis la base de données");
-	    System.out.println("7/ Charger un fichier de description factory");
-		System.out.println("8/ Charger un fichier de description factory global (itiaventure ou spaceopera)");
-		System.out.println("9/ Charger un fichier de description via compilation");
-		System.out.println("10/ Quitter");
+	    System.out.println("0/ Jouer un tour"); 
+	    System.out.println("1/ Jouer une partie complète"); 
+	    System.out.println("2/ Charger un fichier de description"); 
+		System.out.println("3/ Charger un fichier de description factory"); 
+		System.out.println("4/ Charger un fichier de description factory global (itiaventure ou spaceopera)"); 
+		System.out.println("5/ Charger un fichier de description via compilation"); 
+		System.out.println("6/ Charger une sauvegarde");
+		System.out.println("7/ Charger la partie en cours depuis la base de données");
+		System.out.println("8/ Sauvegarder une partie");
+		System.out.println("9/ Enregistrer la partie en cours dans la base de données");
+		System.out.println("10/ Quitter le jeu");
+
 	    try {
 		switch (scanner.nextInt()) {
 		case 0:
 		    if (simulateur == null) {
-			System.out.println("Impossible de jouer un tour. Vous n'avez pas de partie en cours");
+			System.out.println("Impossible de jouer un tour. Vous n'avez pas sélectionné de fichier de jeu.");
 		    } else {
 			simulateur.executerUnTour();
 		    }
 		    break;
 		case 1:
 		    if (simulateur == null) {
-			System.out.println("Impossible de jouer un tour. Vous n'avez pas de partie en cours");
+			System.out.println("Impossible de jouer une partie. Vous n'avez pas sélectionné de fichier de jeu.");
 		    } else {
 			simulateur.executerJusquALaFin();
 		    }
@@ -122,36 +121,36 @@ public class Main {
 		    chargerFichierDescription();
 			break;
 		case 3:
-		    sauvegarderFichierSerialisation();
+			chargerFichierDescriptionFactory();
 		    break;
 		case 4:
-		    chargerFichierSerialisation();
+			chargerFichierDescriptionFactoryGlobal();
 		    break;
 		case 5:
-		    enregistrerBD();
+			chargerFichierCompilation();
 		    break;
 		case 6:
-		    chargerBD();
+			chargerFichierSerialisation();
 		    break;	
 		case 7:
-			chargerFichierDescriptionFactory();
+			chargerBD();
 			break;
 		case 8:
-			chargerFichierDescriptionFactoryGlobal();
+			sauvegarderFichierSerialisation();
 			break;
 		case 9:
-			chargerFichierCompilation();
+			enregistrerBD();
 			break;
 		case 10:
-			System.out.println("EXIT");
+			System.out.println("Merci d'avoir joué !");
 		    scanner.close();
-		    System.exit(1);
+		    System.exit(0);
 		    break;
 		default:
 		    System.err.println("Choisissez une option (valeur entre 0 et 10)");
 		}
 	    } catch (java.util.InputMismatchException e) {
-		System.out.println("Veuillez saisir une option existante");
+		System.out.println("Veuillez saisir une option correcte (valeur entre 0 et 10)");
 		scanner.nextLine();
 	    }
 	}
@@ -162,7 +161,7 @@ public class Main {
 	 */
     public static void chargerFichierDescription() {
 	System.out.println("Chargement d'un fichier textuel de description");
-	System.out.print("Veuillez saisir le nom du fichier: ");
+	System.out.print("Veuillez saisir le nom du fichier à charger: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurDescription(new FileReader(nomFichier));
@@ -181,7 +180,7 @@ public class Main {
 	 */
 	public static void chargerFichierDescriptionFactory() {
 	System.out.println("Chargement d'un fichier textuel de description");
-	System.out.print("Veuillez saisir le nom du fichier: ");
+	System.out.print("Veuillez saisir le nom du fichier à charger: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurDescriptionFactory(new FileReader(nomFichier));
@@ -202,7 +201,7 @@ public class Main {
 	 */
 	public static void chargerFichierDescriptionFactoryGlobal() {
 	System.out.println("Chargement d'un fichier textuel de description");
-	System.out.print("Veuillez saisir le nom du fichier: ");
+	System.out.print("Veuillez saisir le nom du fichier à charger: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurDescriptionFactoryGlobal(new FileReader(nomFichier));
@@ -226,7 +225,7 @@ public class Main {
 	if (monde == null) {
 	    System.out.println("Vous n'avez pas de partie en cours");
 	} else {
-	    System.out.print("Veuillez saisir le nom du fichier: ");
+	    System.out.print("Veuillez saisir le nom du fichier pour la sauvegarde: ");
 	    nomFichier = scanner.next();
 	    try {
 		enregistreur = new EnregistreurSerialisation(new ObjectOutputStream(new FileOutputStream(nomFichier)));
@@ -244,7 +243,7 @@ public class Main {
 	 */
     public static void chargerFichierSerialisation() {
 	System.out.println("Chargement d'une sauvegarde");
-	System.out.print("Veuillez saisir le nom du fichier: ");
+	System.out.print("Veuillez saisir le nom du fichier à charger: ");
 	nomFichier = scanner.next();
 	try {
 	    lecteur = new LecteurSerialisation(new ObjectInputStream(new FileInputStream(nomFichier)));
@@ -296,9 +295,12 @@ public class Main {
 		connection.close();
 	}
 
+	/**
+	 * Charge un fichier de description via compilation et initialise une partie.
+	 */
 	public static void chargerFichierCompilation() {
     	System.out.println("Chargement d'un fichier textuel de description");
-		System.out.print("Veuillez saisir le nom du fichier: ");
+		System.out.print("Veuillez saisir le nom du fichier à charger: ");
 		nomFichier = scanner.next();
 		try (FileReader fluxTexte = new FileReader(nomFichier)) {
             LecteurCompilation lecteur = new LecteurCompilation(fluxTexte);
