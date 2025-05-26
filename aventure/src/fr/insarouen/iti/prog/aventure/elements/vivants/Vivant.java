@@ -200,16 +200,22 @@ public abstract class Vivant extends Entite implements Executable {
 	 * Affiche un résumé du vivant.
 	 */
 	public String toString() {
-		StringBuilder sb = new StringBuilder("Nom du joueur : ");
-		sb.append(this.getNom());
-		sb.append("\nPV : ").append(this.pointsVie);
-		sb.append("\nPF : ").append(this.pointsForce);
-		sb.append("\nDans la pièce : ").append(this.piece.getNom());
-		sb.append("\nObjets possédés : ");
-		for (Objet o : this.getObjets()) {
-			sb.append(o.getNom()).append(" ");
-		}
-		return sb.toString();
+	StringBuilder resultat = new StringBuilder("Nom du joueur : ");
+	resultat.append(this.getNom());
+	resultat.append(String.format("\nPointsDeVie : %s \nPointsDeForce : %s\n", this.getPointVie(), this.getPointForce()));
+	resultat.append(this.getPiece().toString());
+	resultat.append(String.format("\nObjets de %s :\n", this.getNom()));
+
+	for (Objet objet : this.getObjets()) {
+		System.out.println(objet); // Affichage console comme dans l'original
+		resultat.append(objet.getNom()).append("\n");
 	}
+
+	resultat.append("Les portes de la pièce : ");
+	for (Porte porte : this.getPiece().getPortes()) {
+		resultat.append(porte.getNom()).append(" ");
+	}
+	return resultat.toString();
+}
 }
 
