@@ -92,14 +92,13 @@ public class Main {
 	    System.out.println("0/ Jouer un tour"); 
 	    System.out.println("1/ Jouer une partie complète"); 
 	    System.out.println("2/ Charger un fichier de description"); 
-		System.out.println("3/ Charger un fichier de description factory"); 
-		System.out.println("4/ Charger un fichier de description factory global (itiaventure ou spaceopera)"); 
-		System.out.println("5/ Charger un fichier de description via compilation"); 
-		System.out.println("6/ Charger une sauvegarde");
-		System.out.println("7/ Charger la partie en cours depuis la base de données");
-		System.out.println("8/ Sauvegarder une partie");
-		System.out.println("9/ Enregistrer la partie en cours dans la base de données");
-		System.out.println("10/ Quitter le jeu");
+		System.out.println("3/ Charger un fichier de description factory global (itiaventure ou spaceopera)"); 
+		System.out.println("4/ Charger un fichier de description via compilation"); 
+		System.out.println("5/ Charger une sauvegarde");
+		System.out.println("6/ Charger la partie en cours depuis la base de données");
+		System.out.println("7/ Sauvegarder une partie");
+		System.out.println("8/ Enregistrer la partie en cours dans la base de données");
+		System.out.println("9/ Quitter le jeu");
 
 	    try {
 		switch (scanner.nextInt()) {
@@ -121,36 +120,33 @@ public class Main {
 		    chargerFichierDescription();
 			break;
 		case 3:
-			chargerFichierDescriptionFactory();
-		    break;
-		case 4:
 			chargerFichierDescriptionFactoryGlobal();
 		    break;
-		case 5:
+		case 4:
 			chargerFichierCompilation();
 		    break;
-		case 6:
+		case 5:
 			chargerFichierSerialisation();
+		    break;
+		case 6:
+			chargerBD();
 		    break;	
 		case 7:
-			chargerBD();
-			break;
-		case 8:
 			sauvegarderFichierSerialisation();
 			break;
-		case 9:
+		case 8:
 			enregistrerBD();
 			break;
-		case 10:
+		case 9:
 			System.out.println("Merci d'avoir joué !");
 		    scanner.close();
 		    System.exit(0);
-		    break;
+			break;
 		default:
-		    System.err.println("Choisissez une option (valeur entre 0 et 10)");
+		    System.err.println("Choisissez une option (valeur entre 0 et 9)");
 		}
 	    } catch (java.util.InputMismatchException e) {
-		System.out.println("Veuillez saisir une option correcte (valeur entre 0 et 10)");
+		System.out.println("Veuillez saisir une option correcte (valeur entre 0 et 9)");
 		scanner.nextLine();
 	    }
 	}
@@ -170,27 +166,6 @@ public class Main {
 	    simulateur = new Simulateur(monde, conditionsDeFin);
 	} catch (Throwable e) {
 	    lecteur = null;
-	    System.err.println("La lecture de votre fichier a rencontré un problème");
-	    System.err.println(String.format("---> %s ",e.getMessage()));
-	}
-    }
-
-	/**
-	 * Charge un fichier de description via la factory de base et initialise une partie.
-	 */
-	public static void chargerFichierDescriptionFactory() {
-	System.out.println("Chargement d'un fichier textuel de description");
-	System.out.print("Veuillez saisir le nom du fichier à charger: ");
-	nomFichier = scanner.next();
-	try {
-	    lecteur = new LecteurDescriptionFactory(new FileReader(nomFichier));
-	    monde = lecteur.getMonde();
-		System.out.println(monde.getNom());
-	    conditionsDeFin = lecteur.getConditionsDeFin();
-	    simulateur = new Simulateur(monde, conditionsDeFin);
-	} catch (Throwable e) {
-	    lecteur = null;
-		e.printStackTrace();
 	    System.err.println("La lecture de votre fichier a rencontré un problème");
 	    System.err.println(String.format("---> %s ",e.getMessage()));
 	}
