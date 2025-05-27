@@ -3,7 +3,6 @@ package fr.insarouen.iti.prog.aventure.elements.objets;
 import fr.insarouen.iti.prog.aventure.elements.Entite;
 import fr.insarouen.iti.prog.aventure.Monde;
 import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
-import fr.insarouen.iti.prog.aventure.*;
 
 /**
  * Classe abstraite représentant un objet dans le monde du jeu.

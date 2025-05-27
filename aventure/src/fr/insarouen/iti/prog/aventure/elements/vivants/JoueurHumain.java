@@ -11,7 +11,6 @@ import fr.insarouen.iti.prog.aventure.elements.structure.Piece;
 import fr.insarouen.iti.prog.aventure.elements.structure.PorteFermeException;
 import fr.insarouen.iti.prog.aventure.elements.structure.PorteInexistanteDansLaPieceException;
 import fr.insarouen.iti.prog.aventure.elements.structure.Porte;
-import fr.insarouen.iti.prog.aventure.elements.Etat;
 import fr.insarouen.iti.prog.aventure.spaceopera.Galaxie;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Collection;
 
 /**
  * Classe représentant un joueur contrôlé par l'utilisateur.

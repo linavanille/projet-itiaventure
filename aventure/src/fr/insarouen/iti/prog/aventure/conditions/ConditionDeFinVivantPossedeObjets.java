@@ -1,7 +1,6 @@
 package fr.insarouen.iti.prog.aventure.conditions;
 
 import fr.insarouen.iti.prog.aventure.EtatDuJeu;
-import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
 import fr.insarouen.iti.prog.aventure.elements.vivants.Vivant;
 import fr.insarouen.iti.prog.aventure.elements.objets.Objet;
 import java.util.Map;

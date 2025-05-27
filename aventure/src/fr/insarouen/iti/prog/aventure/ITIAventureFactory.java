@@ -1,6 +1,5 @@
 package fr.insarouen.iti.prog.aventure;
 
-import fr.insarouen.iti.prog.aventure.Monde;
 import fr.insarouen.iti.prog.aventure.elements.vivants.Monstre;
 import fr.insarouen.iti.prog.aventure.elements.structure.Porte;
 import fr.insarouen.iti.prog.aventure.elements.structure.Piece;

@@ -9,8 +9,6 @@ import java.lang.StringBuilder;
 import java.util.Collection;
 import java.util.Collections;
 import java.io.Serializable;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Représente un monde dans lequel des entités peuvent être ajoutées et manipulées.

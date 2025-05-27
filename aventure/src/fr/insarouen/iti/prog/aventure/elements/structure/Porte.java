@@ -1,6 +1,5 @@
 package fr.insarouen.iti.prog.aventure.elements.structure;
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;

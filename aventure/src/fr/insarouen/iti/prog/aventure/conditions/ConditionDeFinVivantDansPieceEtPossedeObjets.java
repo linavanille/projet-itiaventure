@@ -1,12 +1,9 @@
 package fr.insarouen.iti.prog.aventure.conditions;
 
 import fr.insarouen.iti.prog.aventure.EtatDuJeu;
-import fr.insarouen.iti.prog.aventure.conditions.ConditionDeFin;
 import fr.insarouen.iti.prog.aventure.elements.vivants.Vivant;
 import fr.insarouen.iti.prog.aventure.elements.objets.Objet;
 import fr.insarouen.iti.prog.aventure.elements.structure.Piece;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
 * Classe conditon de fin VivantDansPieceEtPossedeObjets : permet de terminer le jeu si un certain vivant 

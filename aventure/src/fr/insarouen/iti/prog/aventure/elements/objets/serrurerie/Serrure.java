@@ -3,9 +3,7 @@ package fr.insarouen.iti.prog.aventure.elements.objets.serrurerie;
 import fr.insarouen.iti.prog.aventure.Monde;
 import fr.insarouen.iti.prog.aventure.elements.objets.Objet;
 import fr.insarouen.iti.prog.aventure.elements.Etat;
-import fr.insarouen.iti.prog.aventure.elements.objets.serrurerie.Cle;
 import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
-import fr.insarouen.iti.prog.aventure.EntiteDejaDansUnAutreMondeException;
 import fr.insarouen.iti.prog.aventure.elements.ActivationImpossibleException;
 import fr.insarouen.iti.prog.aventure.elements.ActivationImpossibleAvecObjetException;
 
