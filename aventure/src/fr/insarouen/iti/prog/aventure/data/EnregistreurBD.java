@@ -21,44 +21,64 @@ import fr.insarouen.iti.prog.aventure.elements.objets.Objet;
 import fr.insarouen.iti.prog.aventure.elements.vivants.JoueurHumain;
 
 /**
- * Classe {@code EnregistreurBD} permettant d'enregistrer un {@link }
- *  {@link ConditionDeFin} via la .
- * <p>
- *  
- * </p>
+ * Classe permettant d'enregistrer un monde de jeu dans une base de données.
+ * Elle implémente l'interface Enregistreur et insère les entités du monde (pièces, portes, objets, joueur) en base.
  */
-
-public class EnregistreurBD implements Enregistreur{
+public class EnregistreurBD implements Enregistreur {
 
     PreparedStatement insertPst;
     Connection connection;
     Monde monde;
 
-    public EnregistreurBD(Connection connection, Monde monde)throws SQLException{
+    /**
+     * Crée un nouvel enregistreur lié à une connexion SQL et un monde.
+     * Vide la base de données au démarrage.
+     *
+     * @param connection Connexion JDBC
+     * @param monde Monde à enregistrer
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public EnregistreurBD(Connection connection, Monde monde) throws SQLException {
         this.connection = connection;
         this.monde = monde;
         this.viderBD();
     }
 
+    /**
+     * Vide toutes les tables concernées du schéma de jeu.
+     *
+     * @throws SQLException En cas d'erreur SQL
+     */
     public void viderBD() throws SQLException {
         String insertSQL = "TRUNCATE TABLE possedePDB, contientPDB, JoueurHumain, PiedDeBiche, Porte, Piece, Monde";
         this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.executeUpdate();
     }
 
-    public void enregistreurMonde() throws SQLException{
+    /**
+     * Insère le monde dans la table Monde.
+     *
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public void enregistreurMonde() throws SQLException {
         String insertSQL = "INSERT INTO Monde (nomMonde) VALUES (?)";
         this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, this.monde.getNom());
         insertPst.executeUpdate();
     }
 
-    public void enregistreurPorte(Porte porte) throws SQLException{
+    /**
+     * Insère une porte dans la base, avec son état et ses pièces associées.
+     *
+     * @param porte Porte à enregistrer
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public void enregistreurPorte(Porte porte) throws SQLException {
         String insertSQL = "INSERT INTO Porte (nomPorte, etat,  piece1, piece2, nomMonde) VALUES (?, ?, ?, ?, ?)";
         this.insertPst = connection.prepareStatement(insertSQL);
         Etat etat = porte.getEtat();
         String etatString = "";
-        switch(etat){
+        switch (etat) {
             case Etat.FERME:
                 etatString = "FERME";
                 break;
@@ -81,27 +101,38 @@ public class EnregistreurBD implements Enregistreur{
         insertPst.executeUpdate();
     }
 
-    public void enregistreurPiece(Piece piece) throws SQLException{
-        String insertSQL = "INSERT INTO Piece (nomPiece, nomMonde) VALUES (?,?)"; 
+    /**
+     * Insère une pièce dans la base et enregistre les objets qu'elle contient.
+     *
+     * @param piece Pièce à enregistrer
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public void enregistreurPiece(Piece piece) throws SQLException {
+        String insertSQL = "INSERT INTO Piece (nomPiece, nomMonde) VALUES (?,?)";
         this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, piece.getNom());
         insertPst.setString(2, this.monde.getNom());
         insertPst.executeUpdate();
         for (Entite e : piece.getObjets()) {
-            if (e instanceof PiedDeBiche){
-                this.enregistreurContientPDB(piece, (PiedDeBiche)e);
+            if (e instanceof PiedDeBiche) {
+                this.enregistreurContientPDB(piece, (PiedDeBiche) e);
             }
         }
     }
 
-    public void enregistreurPiedDeBiche(PiedDeBiche pied) throws SQLException{
+    /**
+     * Insère un PiedDeBiche dans la base.
+     *
+     * @param pied Objet PiedDeBiche à enregistrer
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public void enregistreurPiedDeBiche(PiedDeBiche pied) throws SQLException {
         String insertSQL = "INSERT INTO PiedDeBiche (nomPDB, estDeplacable) VALUES (?,?)";
         this.insertPst = connection.prepareStatement(insertSQL);
         String estDeplacableString;
-        if (pied.estDeplacable()){
+        if (pied.estDeplacable()) {
             estDeplacableString = "true";
-        }
-        else{
+        } else {
             estDeplacableString = "false";
         }
 
@@ -110,7 +141,13 @@ public class EnregistreurBD implements Enregistreur{
         insertPst.executeUpdate();
     }
 
-    public void enregistreurJoueurHumain(JoueurHumain joueur) throws SQLException{
+    /**
+     * Insère un joueur humain dans la base, avec sa pièce de départ et ses objets.
+     *
+     * @param joueur Joueur à enregistrer
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public void enregistreurJoueurHumain(JoueurHumain joueur) throws SQLException {
         String insertSQL = "INSERT INTO JoueurHumain (nomJoueur, pointVie, pointForce, nomPiece, nomMonde) VALUES (?,?,?,?,?)";
         this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, joueur.getNom());
@@ -120,30 +157,51 @@ public class EnregistreurBD implements Enregistreur{
         insertPst.setString(5, this.monde.getNom());
         insertPst.executeUpdate();
         for (Entite e : joueur.getObjets()) {
-            if (e instanceof PiedDeBiche){
-                this.enregistreurPossedePDB(joueur, (PiedDeBiche)e);
+            if (e instanceof PiedDeBiche) {
+                this.enregistreurPossedePDB(joueur, (PiedDeBiche) e);
             }
         }
     }
 
-    public void enregistreurContientPDB(Piece piece, PiedDeBiche pied) throws SQLException{
-        String insertSQL = "INSERT INTO ContientPDB (nomPDB, nomPiece) VALUES (?,?)"; 
+    /**
+     * Enregistre le lien entre une pièce et un PiedDeBiche contenu dans cette pièce.
+     *
+     * @param piece Pièce contenant l'objet
+     * @param pied Objet à enregistrer
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public void enregistreurContientPDB(Piece piece, PiedDeBiche pied) throws SQLException {
+        String insertSQL = "INSERT INTO ContientPDB (nomPDB, nomPiece) VALUES (?,?)";
         this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, pied.getNom());
         insertPst.setString(2, piece.getNom());
         insertPst.executeUpdate();
     }
 
-    public void enregistreurPossedePDB(JoueurHumain joueur, PiedDeBiche pied) throws SQLException{
-        String insertSQL = "INSERT INTO PossedePDB (nomPDB, nomPiece) VALUES (?,?)"; 
+    /**
+     * Enregistre le lien entre un joueur et un PiedDeBiche qu'il possède.
+     *
+     * @param joueur Joueur possédant l'objet
+     * @param pied Objet possédé
+     * @throws SQLException En cas d'erreur SQL
+     */
+    public void enregistreurPossedePDB(JoueurHumain joueur, PiedDeBiche pied) throws SQLException {
+        String insertSQL = "INSERT INTO PossedePDB (nomPDB, nomPiece) VALUES (?,?)";
         this.insertPst = connection.prepareStatement(insertSQL);
         insertPst.setString(1, pied.getNom());
         insertPst.setString(2, joueur.getNom());
         insertPst.executeUpdate();
     }
 
+    /**
+     * Enregistre toutes les entités du monde en base de données (pièces, objets, portes, joueur).
+     *
+     * @param monde Monde à enregistrer
+     * @param conditions Conditions de fin du jeu (non utilisées ici)
+     * @throws Throwable En cas d'erreur
+     */
     @Override
-    public void enregistrer(Monde monde, Collection<ConditionDeFin> conditions) throws Throwable{
+    public void enregistrer(Monde monde, Collection<ConditionDeFin> conditions) throws Throwable {
         Collection<Porte> portes = new ArrayList<>();
         Collection<Piece> pieces = new ArrayList<>();
         Collection<PiedDeBiche> pdbs = new ArrayList<>();
@@ -152,17 +210,22 @@ public class EnregistreurBD implements Enregistreur{
         this.enregistreurMonde();
         for (Entite e : this.monde.getEntites()) {
             if (e instanceof Porte) {
-                portes.add((Porte)e);
-            }
-            else { if (e instanceof Piece) {
-                pieces.add((Piece)e);
-            }
-            else { if (e instanceof PiedDeBiche) {
-                pdbs.add((PiedDeBiche)e);
-            }
-            else { if (e instanceof JoueurHumain) {
-                jhs.add((JoueurHumain)e);
-            }}}
+                portes.add((Porte) e);
+            } 
+            else {
+                if (e instanceof Piece) {
+                    pieces.add((Piece) e);
+                } 
+                else {
+                    if (e instanceof PiedDeBiche) {
+                        pdbs.add((PiedDeBiche) e);
+                    } 
+                    else {
+                        if (e instanceof JoueurHumain) {
+                            jhs.add((JoueurHumain) e);
+                        }
+                    }
+                }
             }
         }
 
@@ -170,7 +233,7 @@ public class EnregistreurBD implements Enregistreur{
             this.enregistreurPiece(p);
             for (Objet o : p.getObjets()) {
                 if (o instanceof PiedDeBiche) {
-                    this.enregistreurContientPDB(p, (PiedDeBiche)o);
+                    this.enregistreurContientPDB(p, (PiedDeBiche) o);
                 }
             }
         }
@@ -184,7 +247,7 @@ public class EnregistreurBD implements Enregistreur{
             this.enregistreurJoueurHumain(jh);
             for (Objet o : jh.getObjets()) {
                 if (o instanceof PiedDeBiche) {
-                    this.enregistreurPossedePDB(jh, (PiedDeBiche)o);
+                    this.enregistreurPossedePDB(jh, (PiedDeBiche) o);
                 }
             }
         }

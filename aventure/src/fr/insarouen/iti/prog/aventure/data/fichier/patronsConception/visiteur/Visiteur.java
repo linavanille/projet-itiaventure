@@ -1,18 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur;
+
+package fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- * Interface pour les classes qui peuvent visitées un Visitable suivant 
- * le patron de conception Visiteur.
- * @author delestre
- */
 public interface Visiteur {
 
     /**

@@ -6,8 +6,6 @@ import fr.insarouen.iti.prog.aventure.spaceopera.LecteurBadge;
 import fr.insarouen.iti.prog.aventure.spaceopera.Alien;
 import fr.insarouen.iti.prog.aventure.spaceopera.Teleporteur;
 import fr.insarouen.iti.prog.aventure.spaceopera.VaisseauSpatial;
-import fr.insarouen.iti.prog.aventure.NomDEntiteDejaUtiliseDansLeMondeException;
-import fr.insarouen.iti.prog.aventure.ITIAventureFactory;
 
 public class ITISpaceOperaFactory extends ITIAventureFactory {
 

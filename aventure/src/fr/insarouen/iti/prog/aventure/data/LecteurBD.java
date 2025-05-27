@@ -16,19 +16,30 @@ import java.util.Collection;
 import java.util.ArrayList;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
+/**
+ * Classe permettant de lire un monde de jeu à partir d'une base de données.
+ * Elle implémente l'interface Lecteur et instancie les différents éléments du monde.
+ */
 public class LecteurBD implements Lecteur {
 
     private Connection connection;
     private Monde monde;
 
+    /**
+     * Construit un LecteurBD avec une connexion à la base de données.
+     * Initialise le monde et ses éléments à partir de la base.
+     *
+     * @param connection Connexion JDBC à la base de données
+     * @throws SQLException En cas d'erreur SQL
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException Si un nom d'entité est déjà utilisé
+     * @throws EntiteDejaDansUnAutreMondeException Si une entité est dans un autre monde
+     * @throws ActivationImpossibleException Si une activation échoue
+     */
     public LecteurBD(Connection connection) throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException, EntiteDejaDansUnAutreMondeException, ActivationImpossibleException {
-
         this.connection = connection;
 
         this.lecteurMonde();
@@ -38,16 +49,31 @@ public class LecteurBD implements Lecteur {
         this.lecteurPorte();
     }
 
+    /**
+     * Retourne le monde lu depuis la base.
+     *
+     * @return Le monde
+     */
     @Override
     public Monde getMonde() {
         return this.monde;
     }
 
+    /**
+     * Retourne les conditions de fin (non implémenté ici).
+     *
+     * @return null
+     */
     @Override
     public Collection<ConditionDeFin> getConditionsDeFin() {
         return null;
     }
 
+    /**
+     * Lit le monde depuis la base de données.
+     *
+     * @throws SQLException En cas d'erreur SQL
+     */
     public void lecteurMonde() throws SQLException {
         String requete = "SELECT * FROM Monde";
         PreparedStatement pst = this.connection.prepareStatement(requete);
@@ -58,6 +84,13 @@ public class LecteurBD implements Lecteur {
         }
     }
 
+    /**
+     * Lit les objets PiedDeBiche depuis la base et les ajoute au monde.
+     *
+     * @throws SQLException En cas d'erreur SQL
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException Si le nom est déjà utilisé
+     * @throws EntiteDejaDansUnAutreMondeException Si l'objet appartient déjà à un autre monde
+     */
     public void lecteurPiedDeBiche() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException, EntiteDejaDansUnAutreMondeException {
         String requete = "SELECT nomPDB FROM PiedDeBiche";
         PreparedStatement pst = this.connection.prepareStatement(requete);
@@ -72,9 +105,14 @@ public class LecteurBD implements Lecteur {
             }
             PiedDeBiche pdb = new PiedDeBiche(nomPDB, this.getMonde());
         }
-
     }
 
+    /**
+     * Lit les pièces du monde depuis la base et les initialise.
+     *
+     * @throws SQLException En cas d'erreur SQL
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException Si le nom est déjà utilisé
+     */
     public void lecteurPiece() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException {
         String requete = "SELECT nomPiece FROM Piece";
         PreparedStatement pst = this.connection.prepareStatement(requete);
@@ -93,11 +131,15 @@ public class LecteurBD implements Lecteur {
                 String nomPDB = lesPieces.getString("nomPDB");
                 piece.deposer((Objet)this.getMonde().getEntite(nomPDB));
             }
-
         }
-
     }
 
+    /**
+     * Lit les données du joueur humain depuis la base.
+     *
+     * @throws SQLException En cas d'erreur SQL
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException Si le nom est déjà utilisé
+     */
     public void lecteurJoueurHumain() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException {
         String requete = "SELECT nomJoueur, pointVie, pointForce, nomPiece FROM JoueurHumain";
         PreparedStatement pst = this.connection.prepareStatement(requete);
@@ -123,6 +165,13 @@ public class LecteurBD implements Lecteur {
         }
     }
 
+    /**
+     * Lit les portes depuis la base et les ajoute au monde, avec leur état.
+     *
+     * @throws SQLException En cas d'erreur SQL
+     * @throws NomDEntiteDejaUtiliseDansLeMondeException Si le nom est déjà utilisé
+     * @throws ActivationImpossibleException Si le changement d'état échoue
+     */
     public void lecteurPorte() throws SQLException, NomDEntiteDejaUtiliseDansLeMondeException, ActivationImpossibleException {
         String requete = "SELECT nomPorte, etat, piece1, piece2 FROM porte";
         PreparedStatement pst = this.connection.prepareStatement(requete);
@@ -147,6 +196,5 @@ public class LecteurBD implements Lecteur {
                     break;
             }
         }
-
     }
 }
