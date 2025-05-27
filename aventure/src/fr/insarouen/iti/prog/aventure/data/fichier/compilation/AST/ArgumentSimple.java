@@ -1,25 +1,25 @@
 package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
+/**Classe de la feuille de l'AST représentant un argument simple*/
+public abstract class ArgumentSimple{
 
-//Identifiant, Nombre, CDC, Etat Enum héritent de ArguementSimble (abstract) 
-// Méthode get valeurs 
-
-import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
-import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visiteur;
-
-public abstract class ArgumentSimple implements Visitable{
+	//La valeur de l'argument
 	protected String valeur; 
 	
+	/** 
+	 * Constructeur de ArgumentSimple
+	 * @param valeur le valeur récupérée par l'analyseur syntaxique
+	*/
 	public ArgumentSimple(String valeur){
 		this.valeur = valeur;
 	}
 	
+	/**
+	 * Getteur pour le champ valeur
+	 * @return la valeur stockée dans l'ArgumentSimple
+	 */
 	public String getValeur(){
 		return valeur;
 	}
-
-    public void accepter(Visiteur v) throws Throwable {
-        v.visiter(this);
-    } 
 
 	@Override
 	public String toString(){

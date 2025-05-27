@@ -1,0 +1,15 @@
+fr.insarouen.iti.prog.aventure
+fr.insarouen.iti.prog.aventure.conditions
+fr.insarouen.iti.prog.aventure.data
+fr.insarouen.iti.prog.aventure.data.fichier.compilation.Analyseurs
+fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST
+fr.insarouen.iti.prog.aventure.data.fichier.compilation.exceptions
+fr.insarouen.iti.prog.aventure.data.fichier.compilation.interpreteur
+fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur
+fr.insarouen.iti.prog.aventure.data.fichier.compilation.tableDesSymboles
+fr.insarouen.iti.prog.aventure.elements
+fr.insarouen.iti.prog.aventure.elements.objets
+fr.insarouen.iti.prog.aventure.elements.objets.serrurerie
+fr.insarouen.iti.prog.aventure.elements.structure
+fr.insarouen.iti.prog.aventure.elements.vivants
+fr.insarouen.iti.prog.aventure.spaceopera

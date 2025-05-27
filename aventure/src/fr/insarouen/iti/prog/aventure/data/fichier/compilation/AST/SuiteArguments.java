@@ -7,21 +7,31 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.ArgumentSimpl
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visiteur;
 
-public class SuiteArguments implements Visitable{
+/**
+ * Classe représentant une liste d'arguments (l'ordre est important)
+ * Est un noeud de l'AST produit par l'analyseur syntaxique
+ */
+public class SuiteArguments{
+
+    //Liste des ArgumentSimple contenus dans la suite d'arguments
     private List<ArgumentSimple> lesArgs;
 
+    /**
+     * Cosntructeur de SuiteArguments
+     * @param desArgs liste d'arguments simples
+     */
     public SuiteArguments(List<ArgumentSimple> desArgs){
         this.lesArgs = new ArrayList<>();
         this.lesArgs.addAll(desArgs);
     }
 
+    /**
+     * Permet de récupérer la collection d'arguments
+     * @return La liste des arguments simples
+     */
     public Collection<ArgumentSimple> getArguments(){
         return this.lesArgs;
     }
-
-    public void accepter(Visiteur v) throws Throwable {
-        v.visiter(this);
-    } 
 
     @Override
     public String toString(){

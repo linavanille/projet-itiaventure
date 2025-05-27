@@ -1,27 +1,35 @@
 package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.DeclarationSimple;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collection;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visiteur;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+/**
+ * Classe représentant un ensemble d'affection constituant un fichier de configuration
+ */
 public class DeclarationMultiple implements Visitable{
-	private List<DeclarationSimple> lesDS = null;
+
+    //La liste des déclarations (l'ordre est important)
+	private Collection<DeclarationSimple> lesDS = null;
 	
-	public DeclarationMultiple(List<DeclarationSimple> desDS){
+    /**
+     * Constructeur de DeclarationMultiple
+     * @param desDS une collection de déclarations simples
+     */
+	public DeclarationMultiple(Collection<DeclarationSimple> desDS){
 		this.lesDS = new ArrayList<>();
 		this.lesDS.addAll(desDS);
 	}
 	
+    /**
+     * Permet de récupérer la liste des déclarations simples
+     * @return la collection des déclarations simples
+     */
     public Collection<DeclarationSimple> getDeclarationsSimples() {
         return this.lesDS;
-    }
-
-	@Override
-    public void accepter(Visiteur v) throws Throwable {
-        v.visiter(this);
     }
 
     @Override
