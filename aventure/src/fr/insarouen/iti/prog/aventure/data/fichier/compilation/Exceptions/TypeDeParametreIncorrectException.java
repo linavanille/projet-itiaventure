@@ -3,17 +3,14 @@ package fr.insarouen.iti.prog.aventure.data.fichier.compilation.exceptions;
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
 
 /**
- * Exception levée lorsque durant l'interpétation d'une expression cette 
- * dernière utilise une variable qui est inconnue. 
- * @author delestre
+ * Exception levée lorsque le mauvais type de paramètre est passé en argument d'une fonction
  */
-public class TypeDeParametreIncorrectException extends Exception{
+public class TypeDeParametreIncorrectException extends CompilationException{
     private Identifiant idAyantProvoqueException;
     
     /**
-     * Constructeur de l'exception à partifir de l'identifiant de la 
-     * variable inconnue.
-     * @param id l'identifiant
+     * Constructeur de l'exception 
+     * @param s message
      */
     public TypeDeParametreIncorrectException(String s) {
         super(s);

@@ -7,7 +7,7 @@ import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.Identifiant;
  * dernière utilise une variable qui est inconnue. 
  * @author delestre
  */
-public class IdentifiantInconnuException extends Exception {
+public class IdentifiantInconnuException extends CompilationException {
     private Identifiant idAyantProvoqueException;
     
     /**
