@@ -1,8 +1,8 @@
 package fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST;
 
 import fr.insarouen.iti.prog.aventure.data.fichier.compilation.AST.DeclarationSimple;
-import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visitable;
-import fr.insarouen.iti.prog.aventure.data.fichier.compilation.patronsConception.visiteur.Visiteur;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visitable;
+import fr.insarouen.iti.prog.aventure.data.fichier.patronsConception.visiteur.Visiteur;
 
 import java.util.ArrayList;
 import java.util.Collection;
