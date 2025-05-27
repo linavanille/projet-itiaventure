@@ -12,6 +12,7 @@ import fr.insarouen.iti.prog.aventure.elements.structure.PorteFermeException;
 import fr.insarouen.iti.prog.aventure.elements.structure.PorteInexistanteDansLaPieceException;
 import fr.insarouen.iti.prog.aventure.elements.structure.Porte;
 import fr.insarouen.iti.prog.aventure.elements.Etat;
+import fr.insarouen.iti.prog.aventure.spaceopera.Galaxie;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -111,22 +112,33 @@ public class JoueurHumain extends Vivant {
 	/**
 	 * Affiche un résumé du joueur, de sa position et de ses objets.
 	 */
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Le joueur ").append(this.getNom());
-		sb.append(" est dans la pièce ").append(this.getPiece().getNom());
-		sb.append("\nObjets dans la pièce : ").append(this.getPiece().getObjets());
-		sb.append("\nObjets possédés : ").append(this.getObjets());
 
-		sb.append("\nPortes accessibles : ");
+		if (this.getMonde() instanceof Galaxie) {
+			sb.append(" est dans le vaisseau spatial ").append(this.getPiece().getNom());
+			sb.append("\nObjets dans le vaisseau spatial : ").append(this.getPiece().getObjets());
+			sb.append("\nObjets possédés : ").append(this.getObjets());
+			sb.append("\nPortails accessibles : ");
+		} else {
+			sb.append(" est dans la pièce ").append(this.getPiece().getNom());
+			sb.append("\nObjets dans la pièce : ").append(this.getPiece().getObjets());
+			sb.append("\nObjets possédés : ").append(this.getObjets());
+			sb.append("\nPortes accessibles : ");
+		}
+
 		for (Porte porte : this.getPiece().getPortes()) {
 			sb.append(porte.getNom()).append(" [").append(porte.getEtat()).append("], ");
 		}
 
 		if (!this.getPiece().getPortes().isEmpty()) {
-			sb.setLength(sb.length() - 2); 
+			sb.setLength(sb.length() - 2); // Enlève la dernière virgule
 		}
+
 		return sb.toString();
 	}
+
 }
 
