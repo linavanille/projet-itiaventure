@@ -105,6 +105,7 @@ public class LecteurDescriptionFactoryGlobal implements Lecteur{
      *
      * @return le monde.
      */
+    @Override
     public Monde getMonde(){
         return this.monde;
     }
@@ -114,6 +115,7 @@ public class LecteurDescriptionFactoryGlobal implements Lecteur{
      *
      * @return la collection de conditions de fin.
      */
+    @Override
     public Collection<ConditionDeFin> getConditionsDeFin(){
         return this.conditions;
     }
