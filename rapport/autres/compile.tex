@@ -1,1 +1,73 @@
 \chapter{Compilation}
+
+\section{Organisation}
+La partie compilation consistait a créer une version améliorée d'un des lecteurs, le lecteur de fichier texte qui permettait de charger un monde, afin de le rendre plus générique.\\
+
+Pour cela nous avons appliqué les principes et méthodes appris lors du cours de compilation suivi ce semestre. Nous avons donc décomposer ce sous-projet en différentes parties donc nous avons pu nous occuper en parallèle ou successivement selon les besoins. Le découpage qui a été utilisé est le suivant :
+
+\begin{itemize}
+	\item Etude du problème;
+	\item rédaction de la grammaire et conformité pour Javacc;
+	\item implémentation des classes de l'AST et des classes d'exceptions en Java;
+	\item configuration du fichier Javacc;
+	\item vérification de la sortie de l'analyseur syntaxique;
+	\item implémentation de l'interpréteur (et analyseur sémantique);
+	\item implémentation du lecteur et intégration au Main du projet.
+\end{itemize}
+
+\section{Etude du problème}
+Nous avons commencé cette partie du projet par analyser et comprendre la structure du fichier que nous devions interpréter. Nous disposions d'un exemple sur Moodle ainsi que de la description de chaque mot qui pouvait exister dans ce fichier. Le fichier se présentait de la façon suivante (un extrait seulement) :
+\begin{verbatim}
+	m1 = monde("LeMondeImpitoyableDeITI")
+	bureau_nicos = piece(m1, "BureauDesNicolas")
+\end{verbatim}
+
+Une autre contrainte était donnée :  un fichier ne peut créer qu'un seul monde. \\
+
+L'objectif final du lecteur étant de créer un monde (et de respecter les contraintes liées à l'interface lecteur), le programme a développé était donc un interpréteur et non un compilateur.
+
+\section{Rédaction de la grammaire}
+
+Notre méthodologie a été itérative, nous sommes partis de l'axiome et avons succesivement créé les éléments donc nous avions besoin pour décrire chaque ligne. Notre grammaire est donc la suivante, l'axiome est ici DeclarationMultiple :
+\begin{verbatim}
+	DeclarationMultiple -> DeclarationSimple DeclarationSimple*
+	DeclarationSimple -> identifiant = Fonction
+	Fonction -> nomFonction ( SuiteArguments )
+	SuiteArguments -> ArgumentSimple ArgumentSimple*
+	ArgumentSimple -> identifiant | chiffre | " chaineDeCaractere " | enumeration | fonction
+\end{verbatim}
+La grammaire ne possédant n'étant pas reccursive à gauche et ne manipulant pas $\epsilon$ elle est compatible avec Javacc et nous permet donc de passer à l'étape suivante.
+
+\section{Implémentation en Java}
+A partir de la grammaire nous avons pu définir la forme que prendrai notre AST et donc définir les classes représentant les noeuds et les feuilles de cet AST : \\
+\includegraphics[width=9cm]{images/UML-AST.png}
+\\
+A partir de là nous nous sommes séparés en deux groupes : un groupe sur l'implémentation en Java et l'autre sur la configuration du fichier Javacc.\\
+
+Le groupe implémentant les classes en Java a suivi le diagramme de classe définit ci-dessus, ce qui n'a donc pas été très long. Nous avons fait le choix de créer une classe abstraite pour les ArgumentsSimple, ce qui nous a fait implémenter une classe Chiffre et ChaineDeCaractere qui sont des doublons des classes déjà existantes en Java mais qui, selon nous, permettait une meilleur lecture de l'AST.
+
+\section{Configuration du fichier Javacc}
+Afin de configurer le fichier Javacc, nous sommes partis de la base du fichier Javacc de la calculatrice présentée lors du cours de compilation. Nous l'avons compléter par une SKIP qui permet d'ignorer certains caractères (espaces, sauts de lignes, tabulations, etc.) qui n'ont pas d'intérêt dans la lecture de ce fichier.\\
+
+Nous avons également transformé les terminaux de la grammaire en expression rationnelle afin de définir les TOKEN qui seront utilisés par l'analyseur lexical.\\
+
+La dernière partie à consisté à écrire le code Java associé à chaque règle de la grammaire en s'appuyant sur l'implémentation de l'AST définit précédemment par le diagramme de classe. La grammaire étant relativement simple, cette partie a été relativement rapide.
+
+\section{Vérification de l'analyseur syntaxique}
+Avant de commencer l'implémentation de l'interpréteur, le groupe qui a implémenté les classes en JAva a testé la validité de l'AST produit par l'analyseur syntaxique à partir de quelques lignes du fichier d'exemple. Cette étape nous a permis de nous rendre compte que nous n'avions pas pris en compte les serrures, c'est-à-dire que nous n'avions pas compté qu'une fonction pouvait faire office d'argument (ArgumentSimple) dans une autre fonction. Cela a conduit à une modification de la grammaire, du diagramme de classe et du fichier Javacc. Cette modification n'a heureusement pas induit de changement majeur dans le code. \\
+
+Une fois l'AST conforme au fichier de description nous avons pu commencer à implémenter l'interpréteur.
+
+\section{Implémentation de l'interpréteur}
+Pour l'interpréteur nous avons fait le choix de le fusionner avec l'analyseur sémantique. La taille du projet permettait une fusion sans que l'implémentation ne soit trop lourde (et sur conseil de M. Delestre).\\
+
+Une grande partie du temps que nous avons consacré l'interpréteur a consisté à analyser le code des interpréteurs de la Calcultrice et du LightGrep.\\
+
+Certaines classes qui était prévues pour être Visitable n'ont finalement pas été utilisée avec le Design Pattern Visiteur/Visitable, l'accumulation de problème dans le développement de l'interpréteur ne nous a pas permis de suivre correctement l'utilisation de ce Design Pattern.\\
+
+Les tests de l'interpréteur se sont fait au fur et à mesure de la prise en charge des différentes fonctions du fichier descripteur par l'interpréteur. Cette méthodologie nous a fait gagner un temps précieux.
+
+\section{implémentation du lecteur}
+L'interface lecteur nous contraignait simplement à pouvoir récupérer les conditions de fin ainsi que le Monde qui a été chargé. Ce qui nous a poussé à intégrer ces fonctions directement dans l'interpréteur. Ces deux fonctions de l'interpreteur nous ont fait gagner du temps lors du développement du lecteur.\\
+
+L'implémentation du lecteur s'est faite rapidement et sans problèmes majeurs, ce qui nous a permis d'intégrer le lecteur assez rapidement dans le Main du projet et d'avoir un nouveau lecteur fonctionnel.
