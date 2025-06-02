@@ -1,24 +1,56 @@
 \chapter{Design Pattern}
 
-Cette partie du projet vise à améliorer la qualité et la réutilisabilité du code ITIAventure en appliquant le Design Pattern Abstract Factory. Ce patron permet de centraliser la création des entités du jeu dans des classes dédiées, tout en facilitant l’extension à d’autres univers sans modifier le code existant.
+Dans le cadre de la refonte architecturale du projet ITIAventure, nous avons introduit le design pattern \textbf{Factory}. Ce patron de création a été choisi pour séparer clairement la logique d’instanciation des entités (comme les pièces, portes ou créatures) du reste de l’application. En centralisant cette logique dans une classe dédiée, le code devient plus modulaire, maintenable et extensible, facilitant notamment l’ajout de nouveaux univers de jeu.
 
-\section{ITIAventureFactory}
+\section{Objectifs du pattern}
 
-ITIAventureFactory regroupe les méthodes de création des entités de base : Monde, Piece, Porte, Monstre, Serrure, Cle.
-Elle encapsule les appels aux constructeurs, ce qui permet de créer des entités sans connaître leur classe concrète.
+Le pattern \textit{Factory} a pour vocation de proposer une interface standardisée pour la création d’objets, tout en dissimulant les classes concrètes qui les implémentent. Ce découplage permet à l’application de rester indépendante des détails de construction des objets manipulés.
 
-\section{ITISpaceOperaFactory}
+Dans notre cas, ce besoin s’est exprimé lors de la lecture du fichier de description du labyrinthe. Initialement, la classe \texttt{LecteurDescription} invoquait directement les constructeurs des entités, ce qui liait fortement cette classe à une version particulière de l’univers du jeu.
 
-Pour le nouvel univers spatial, nous avons créé ITISpaceOperaFactory, qui hérite de ITIAventureFactory et redéfinit les méthodes de création pour retourner des entités spécifiques : Galaxie, VaisseauSpatial, Teleporteur, Alien, LecteurBadge, Badge.
+\section{Mise en œuvre}
 
-Grâce à ce système :
+Nous avons conçu une classe \texttt{ITIAventureFactory} regroupant les méthodes de création des entités suivantes :
+\begin{itemize}
+  \item \texttt{creationMonde()} $\rightarrow$ \texttt{Monde}
+  \item \texttt{creationPiece()} $\rightarrow$ \texttt{Piece}
+  \item \texttt{creationPorte()} $\rightarrow$ \texttt{Porte}
+  \item \texttt{creationMonstre()} $\rightarrow$ \texttt{Monstre}
+  \item \texttt{creationCle()} $\rightarrow$ \texttt{Cle}
+  \item \texttt{creationSerrure()} $\rightarrow$ \texttt{Serrure}
+\end{itemize}
 
-    le code principal du jeu reste inchangé ;
+La classe \texttt{LecteurDescription} a été modifiée afin de déléguer la création de ces entités à la factory, plutôt que de les instancier directement. Ce changement rend possible la sélection dynamique de la factory à utiliser, en se basant sur le contenu du fichier de description (notamment sa première ligne).
 
-    on peut facilement basculer entre les univers ;
+\section{Extension à un nouvel univers}
 
-    les classes restent ouvertes à l’extension mais fermées à la modification.
+Dans le but de proposer une version alternative de l’univers du jeu, nous avons introduit de nouvelles entités propres à un contexte de science-fiction. Ces classes ont été développées dans le package \texttt{fr.insarouen.iti.prog.aventure.spaceopera}, chacune héritant de leur équivalent dans l’univers d’origine :
+\begin{itemize}
+  \item \texttt{Galaxie} (héritant de \texttt{Monde})
+  \item \texttt{VaisseauSpatial} (héritant de \texttt{Piece})
+  \item \texttt{Teleporteur} (héritant de \texttt{Porte})
+  \item \texttt{Alien} (héritant de \texttt{Monstre})
+  \item \texttt{Badge} (héritant de \texttt{Cle})
+  \item \texttt{LecteurBadge} (héritant de \texttt{Serrure})
+\end{itemize}\\
 
-\section{Conclusion}
+\vspace{0.5cm}
 
-L’usage du pattern Abstract Factory nous a permis de découpler la logique de création des entités du reste du jeu.
+Afin d’intégrer ces entités dans notre moteur de jeu tout en conservant la logique de création centralisée, nous avons implémenté une classe \texttt{ITISpaceOperaFactory}, conforme à l’interface définie par la factory abstraite. Cette classe redéfinit les méthodes de création telles que :
+\begin{itemize}
+  \item \texttt{creationMonde()} $\rightarrow$ \texttt{Galaxie}
+  \item \texttt{creationPiece()} $\rightarrow$ \texttt{VaisseauSpatial}
+  \item \texttt{creationPorte()} $\rightarrow$ \texttt{Teleporteur}
+  \item \texttt{creationMonstre()} $\rightarrow$ \texttt{Alien}
+  \item \texttt{creationCle()} $\rightarrow$ \texttt{Badge}
+  \item \texttt{creationSerrure()} $\rightarrow$ \texttt{LecteurBadge}
+\end{itemize}\\
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=9cm]{images/UML-Factory.png}
+\caption{Diagramme UML illustrant l’héritage entre \texttt{ITIAventureFactory} et \texttt{ITISpaceOperaFactory}}
+\end{figure}\\
+
+Ce découplage rend le moteur de jeu entièrement générique : il suffit de changer la factory utilisée pour adapter l’expérience à un nouvel univers.

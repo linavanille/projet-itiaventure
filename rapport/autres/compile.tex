@@ -40,8 +40,13 @@ La grammaire n'étant pas récursive à gauche et ne manipulant pas $\epsilon$ e
 
 \section{Implémentation en Java}
 A partir de la grammaire nous avons pu définir la forme que prendrait notre AST et donc définir les classes représentant les noeuds et les feuilles de cet AST : 
+
+\begin{figure}[H]
+\centering
 \includegraphics[width=9cm]{images/UML-AST.png}
-\\
+\caption{Diagramme UML illustrant notre AST}
+\end{figure}
+
 A partir de là nous nous sommes séparés en deux groupes : un groupe sur l'implémentation en Java et l'autre sur la configuration du fichier Javacc.
 
 Le groupe implémentant les classes en Java a suivi le diagramme de classe définit ci-dessus, ce qui n'a donc pas été très long. Nous avons fait le choix de créer une classe abstraite pour les ArgumentsSimple, ce qui nous a fait implémenter une classe Chiffre et ChaineDeCaractere qui sont des doublons des classes déjà existantes en Java mais qui, selon nous, permettait une meilleure lecture de l'AST.

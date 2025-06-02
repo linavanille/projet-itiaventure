@@ -2,9 +2,9 @@
 
 Dans cette partie du projet ITI Aventure, nous avons implémenté la persistance des données en utilisant une base de données relationnelle. L'objectif principal était de comprendre et d'appliquer un mapping objet-base de données, c’est-à-dire relier les classes Java du jeu (comme Monde, Piece, Porte) à des tables relationnelles.
 
-\subsection{Passage modèle E-A vers relationnel}
+\section{Passage modèle E-A vers relationnel}
 
-Un modèle Entité-Association nous a été fourni.
+Un modèle Entité-Association nous a été fourni.\\
 
 Dans notre cas, le modèle EA définissait des entités:
 \begin{itemize}
@@ -15,7 +15,7 @@ Et des relations entre ces entités:
 \begin{itemize}
 	\item Contient,
 	\item Possède
-\end{itemize}
+\end{itemize}\\
 
 Ces relations sont accompagnées de cardinalités qui précisent combien d'éléments peuvent être liés entre eux. Par exemple, une Porte est liée à exactement deux Pieces, tandis qu'une Piece peut contenir aucun ou plusieurs PiedDeBiche.\\
 
@@ -30,34 +30,60 @@ Chaque entité et chaque relation du modèle EA devient une table SQL:
 	\item PiedDeBiche: objet manipulable par le joueur ou présent dans une pièce.
 	\item ContientPDB: association entre une pièce et les objets qu’elle contient.
 	\item PossedePDB: association entre un joueur et les objets qu’il possède.
-\end{itemize}
+\end{itemize}\\
 
 Chaque table possède une clé primaire (souvent le nom des entités), et les relations entre les tables sont assurées grâce à des clés étrangères.\\
 
 Cela correspond à 3 fichiers SQL:
 \begin{itemize}
 	\item tables.sql: création des tables
-	\item sup\_table.sql: suppression des données
-	\item test\_bd.sql: jeu de données pour tester
-\end{itemize}
+	\item sup_table.sql: suppression des données
+	\item test_bd.sql: jeu de données pour tester
+\end{itemize}\\
 
-Nous avons choisi ce découpage en particulier de façon à ce que chaque table puisse représenter une entité ou une relation, et qu'on puisse facilement ajouter d'autres objets ou d'autres relations si besoin. Cette étape est essentielle avant d’implémenter la persistance via JDBC, car elle conditionne la façon dont les données seront lues et écrites dans la base de données.
+Nous avons choisi ce découpage en particulier de façon à ce que chaque table puisse représenter une entité ou une relation, et qu'on puisse facilement ajouter d'autres objets ou d'autres relations si besoin. Cette étape est essentielle avant d’implémenter la persistance via JDBC, car elle conditionne la façon dont les données seront lues et écrites dans la base de données.\\
 
-\subsection{Implémentation de la persistance avec JDBC}
+\section{Implémentation de la persistance avec JDBC}
 
-Une fois le modèle relationnel défini, nous avons implémenté la persistance en Java à l’aide de JDBC et des objets Connection, PreparedStatement et ResultSet pour la connexion, l'exécution des requêtes et la récupération des résultats.
+Une fois le modèle relationnel défini, nous avons implémenté la persistance en Java à l’aide de JDBC. Cela a permis d’établir une connexion entre Java et une base de données relationnelle, et d’exécuter des requêtes SQL pour lire ou modifier des données.\\
 
-\subsection{Enregistrement des données: EnregistreurBD.java}
+Nous avons utilisé des objets Connection pour se connecter à la base PostgreSQL, des PreparedStatement pour exécuter les requêtes (INSERT, SELECT), et des ResultSet pour récupérer les résultats des requêtes de lecture.\\
+
+\section{Enregistrement des données: EnregistreurBD.java}
 
 La classe EnregistreurBD permet d’enregistrer un monde Java dans la base de données.  
-Elle parcourt les entités du monde et exécute les requêtes SQL nécessaires pour remplir les tables. Chaque élément est inséré dans un ordre cohérent pour respecter les dépendances.
+Elle parcourt les entités du monde et exécute les requêtes SQL nécessaires pour remplir les tables. Chaque élément est inséré dans un ordre cohérent pour respecter les dépendances (par exemple, une pièce est insérée avant les portes qui la relient).\\
 
-\subsection{Lecture des données: LecteurBD.java}
+Les objets sont insérés grâce à des requêtes SQL paramétrées, comme :
+\begin{verbatim}
+INSERT INTO Piece (nomPiece, monde) VALUES (?, ?);
+\end{verbatim}\\
 
-La classe LecteurBD a pour rôle de lire les données enregistrées dans la base et de recréer les objets Java du jeu.
-Chaque méthode correspond à une table, par exemple: lecteurMonde(): lit la table Monde et crée un objet Monde par instanciation
-Les relations sont restaurées en retrouvant les bons objets grâce aux noms stockés dans la base, puis en les associant correctement dans le monde Java.
+Les relations entre entités sont également insérées via les tables de liaison ContientPDB et PossedePDB.\\
 
-\subsection{Fichier de test et démonstration}
+\section{Lecture des données: LecteurBD.java}
 
-Une classe main a été mise en place pour tester l'enregistrement et la lecture d'un monde à partir de la base de données. Le fichier test\_bd.sql permet d’insérer des données prédéfinies dans les tables afin de vérifier que le chargement depuis la base fonctionne correctement.
+La classe LecteurBD a pour rôle de lire les données enregistrées dans la base et de recréer les objets Java du jeu.\\
+Chaque méthode correspond à une table, par exemple:
+\begin{itemize}
+	\item lecteurMonde(): lit la table Monde et crée un objet Monde par instanciation
+	\item lecteurPiece(): lit les pièces et les associe au monde
+	\item lecteurPorte(): lit les portes et les relie aux bonnes pièces
+	\item lecteurJoueurHumain(): crée le joueur et récupère les objets qu’il possède
+\end{itemize}\\
+
+Les relations sont restaurées en retrouvant les bons objets grâce aux noms stockés dans la base, puis en les associant correctement dans le monde Java.\\
+
+\section{Fichier de test et démonstration}
+
+Un main a été mis en place pour tester l'enregistrement et la lecture d'un monde à partir de la base de données. Le fichier test_bd.sql permet d’insérer des données prédéfinies dans les tables afin de vérifier que le chargement depuis la base fonctionne correctement.\\
+
+Nous avons également pu tester le bon fonctionnement de l'enregistrement en Java en comparant les lignes insérées dans la base avec les entités du monde initial.\\
+
+Cette partie du projet nous a permis de découvrir et mettre en place:
+\begin{itemize}
+	\item la communication entre Java et une base relationnelle via JDBC;
+	\item l’utilisation de PreparedStatement, ResultSet et Connection;
+	\item la construction d’un lien entre des objets Java et des lignes de tables SQL;
+	\item l’importance de bien structurer les données dans la base de donnée pour faciliter les opérations de lecture et d’écriture.
+\end{itemize}
