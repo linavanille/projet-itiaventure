@@ -4,18 +4,18 @@
 \contentsline {subsection}{\numberline {2.0.1}Passage modèle E-A vers relationnel}{3}{subsection.2.0.1}%
 \contentsline {subsection}{\numberline {2.0.2}Implémentation de la persistance avec JDBC}{4}{subsection.2.0.2}%
 \contentsline {subsection}{\numberline {2.0.3}Enregistrement des données: EnregistreurBD.java}{4}{subsection.2.0.3}%
-\contentsline {subsection}{\numberline {2.0.4}Lecture des données: LecteurBD.java}{5}{subsection.2.0.4}%
-\contentsline {subsection}{\numberline {2.0.5}Fichier de test et démonstration}{5}{subsection.2.0.5}%
-\contentsline {chapter}{\numberline {3}Compilation}{6}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Organisation}{6}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Etude du problème}{6}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Rédaction de la grammaire}{7}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Implémentation en Java}{7}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Configuration du fichier Javacc}{8}{section.3.5}%
-\contentsline {section}{\numberline {3.6}Vérification de l'analyseur syntaxique}{9}{section.3.6}%
-\contentsline {section}{\numberline {3.7}Implémentation de l'interpréteur}{9}{section.3.7}%
-\contentsline {section}{\numberline {3.8}implémentation du lecteur}{10}{section.3.8}%
-\contentsline {chapter}{\numberline {4}Design Pattern}{11}{chapter.4}%
-\contentsline {section}{\numberline {4.1}ITIAventureFactory}{11}{section.4.1}%
-\contentsline {section}{\numberline {4.2}ITISpaceOpera}{11}{section.4.2}%
-\contentsline {chapter}{\numberline {5}Conclusion}{12}{chapter.5}%
+\contentsline {subsection}{\numberline {2.0.4}Lecture des données: LecteurBD.java}{4}{subsection.2.0.4}%
+\contentsline {subsection}{\numberline {2.0.5}Fichier de test et démonstration}{4}{subsection.2.0.5}%
+\contentsline {chapter}{\numberline {3}Compilation}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Organisation}{5}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Etude du problème}{5}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Rédaction de la grammaire}{6}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Implémentation en Java}{6}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Configuration du fichier Javacc}{7}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Vérification de l'analyseur syntaxique}{8}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Implémentation de l'interpréteur}{8}{section.3.7}%
+\contentsline {section}{\numberline {3.8}implémentation du lecteur}{8}{section.3.8}%
+\contentsline {chapter}{\numberline {4}Design Pattern}{9}{chapter.4}%
+\contentsline {section}{\numberline {4.1}ITIAventureFactory}{9}{section.4.1}%
+\contentsline {section}{\numberline {4.2}ITISpaceOpera}{9}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Conclusion}{10}{chapter.5}%
