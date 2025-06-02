@@ -17,5 +17,6 @@
 \contentsline {section}{\numberline {3.8}implémentation du lecteur}{8}{section.3.8}%
 \contentsline {chapter}{\numberline {4}Design Pattern}{9}{chapter.4}%
 \contentsline {section}{\numberline {4.1}ITIAventureFactory}{9}{section.4.1}%
-\contentsline {section}{\numberline {4.2}ITISpaceOpera}{9}{section.4.2}%
+\contentsline {section}{\numberline {4.2}ITISpaceOperaFactory}{9}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Conclusion}{9}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Conclusion}{10}{chapter.5}%
