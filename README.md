@@ -42,7 +42,6 @@ Technologies utilisées
 
 Installation
 1. Cloner le projet :
-```bash
 git clone https://github.com/linavanille/projet-itiaventure.git
 2. Ouvrir le projet dans un IDE Java (IntelliJ, Eclipse…)
 3. Compiler et exécuter le projet
